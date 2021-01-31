@@ -1,13 +1,9 @@
 import Layout, { Content } from "antd/lib/layout/layout";
-import SiteBreadcrumb from "../components/SiteBreadcrumb";
-import SiteSider from "../components/SiteSider";
 
-const CompareIndexPage = () => {
+const HomePage = () => {
   return (
     <>
-      <SiteSider type="compare_type" />
       <Layout style={{ padding: "0 24px 24px" }}>
-        <SiteBreadcrumb />
         <Content
           className="site-layout-background"
           style={{
@@ -16,11 +12,11 @@ const CompareIndexPage = () => {
             minHeight: 900
           }}
         >
-          <p>Compare Index</p>
+          <p>Home</p>
         </Content>
       </Layout>
     </>
   );
 };
 
-export default CompareIndexPage;
+export default HomePage;

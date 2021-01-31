@@ -4,16 +4,13 @@ import SiteFooter from "./components/SiteFooter";
 import "antd/dist/antd.css";
 import { Layout } from "antd";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import SiteBreadcrumb from "./components/SiteBreadcrumb";
-import SiteSider from "./components/SiteSider";
-import StockListView from "./pages/StockListPage";
-import HomePage from "./pages/Home";
+import StockListPage from "./pages/StockListPage";
+import HomePage from "./pages/HomePage";
 import CompareIndexPage from "./pages/CompareIndex";
 import MacroPage from "./pages/MacroPage";
 import StockInfoPage from "./pages/StockInfoPage";
 import ComparePage from "./pages/ComparePage";
 import NotFound from "./components/NotFound";
-const { Content } = Layout;
 
 export default function App() {
   return (
@@ -22,54 +19,62 @@ export default function App() {
         <Layout>
           <MainNav />
           <Layout>
-            <SiteSider type="selected" />
-            <Layout style={{ padding: "0 24px 24px" }}>
-              <SiteBreadcrumb />
-              <Content
-                className="site-layout-background"
-                style={{
-                  padding: 24,
-                  margin: 0,
-                  minHeight: 900
+            <Switch>
+              <Route
+                exact
+                path="/"
+                render={() => {
+                  return <Redirect to="/home" />;
                 }}
-              >
-                <Switch>
-                  <Route
-                    exact
-                    path="/"
-                    render={() => {
-                      return <Redirect to="/home" />;
-                    }}
-                  ></Route>
-                  <Route exact path="/home">
-                    <HomePage />
-                  </Route>
-                  <Route path="/selected">
-                    <StockListView />
-                  </Route>
-                  <Route exact path="/stocks">
-                    <StockListView />
-                  </Route>
-                  <Route exact path="/stock/:symbol">
-                    <StockInfoPage />
-                  </Route>
-                  <Route exact path="/compare">
-                    <CompareIndexPage />
-                  </Route>
-                  <Route exact path="/compareCharts/:symbols">
-                    <ComparePage />
-                  </Route>
-                  <Route exact path="/macro">
-                    <MacroPage />
-                  </Route>
-                  <Route path="*">
-                    <NotFound />
-                  </Route>
-                </Switch>
-              </Content>
-              <SiteFooter />
-            </Layout>
+              ></Route>
+              <Route exact path="/home">
+                <HomePage />
+              </Route>
+              <Route
+                exact
+                path="/selected"
+                render={() => {
+                  return <Redirect to="/selected/beat_analysis" />;
+                }}
+              ></Route>
+              <Route path={`/selected/:list_type`}>
+                <StockListPage type="selected" />
+              </Route>
+              <Route
+                exact
+                path="/stocks"
+                render={() => {
+                  return <Redirect to="/stocks/energy" />;
+                }}
+              ></Route>
+              <Route exact path="/stocks/:list_type">
+                <StockListPage type="stock_type" />
+              </Route>
+              <Route exact path="/stock/:symbol">
+                <StockInfoPage />
+              </Route>
+              <Route exact path="/compare">
+                <CompareIndexPage />
+              </Route>
+              <Route exact path="/compareCharts/:symbols">
+                <ComparePage />
+              </Route>
+              <Route
+                exact
+                path="/macro"
+                render={() => {
+                  return <Redirect to="/macro/daily" />;
+                }}
+              ></Route>
+              <Route exact path="/macro/:type">
+                <MacroPage />
+              </Route>
+              <Route path="*">
+                <NotFound />
+              </Route>
+            </Switch>
           </Layout>
+          <SiteFooter />
         </Layout>
       </BrowserRouter>
     </div>
