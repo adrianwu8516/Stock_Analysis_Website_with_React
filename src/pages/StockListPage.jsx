@@ -1,6 +1,6 @@
 import { Skeleton, Table } from "antd";
 import Layout, { Content } from "antd/lib/layout/layout";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import NoData from "../components/NoData";
 import NotFound from "../components/NotFound";
 import SiteBreadcrumb from "../components/SiteBreadcrumb";
@@ -13,13 +13,20 @@ const columns = [
     dataIndex: "symbol",
     fixed: "left",
     width: 80,
-    render: (symbol, row) => <a href={row.url}>{symbol}</a>
+    render: (symbol, row) => (
+      <a href={row.url} target="_blank" rel="noopener noreferrer">
+        {symbol}
+      </a>
+    )
   },
   {
     title: "公司名稱",
     dataIndex: "companyName",
     fixed: "left",
-    width: 150
+    width: 150,
+    render: (companyName, row) => (
+      <Link to={`/stock/${row.symbol}`}>{companyName}</Link>
+    )
   },
   {
     title: "股價",
