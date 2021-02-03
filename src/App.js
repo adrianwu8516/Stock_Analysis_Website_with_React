@@ -37,7 +37,7 @@ export default function App() {
                   return <Redirect to="/selected/beat_analysis" />;
                 }}
               ></Route>
-              <Route path={`/selected/:list_type`}>
+              <Route exact path={`/selected/:list_type`}>
                 <StockListPage type="selected" />
               </Route>
               <Route
@@ -48,16 +48,16 @@ export default function App() {
                 }}
               ></Route>
               <Route exact path="/stocks/:list_type">
-                <StockListPage type="stock_type" />
+                <StockListPage type="stocks" />
               </Route>
-              <Route exact path="/stock/:symbol">
+              <Route exact path="/:module_type/:list_type/:symbol">
                 <StockInfoPage />
               </Route>
               <Route exact path="/compare">
-                <CompareIndexPage />
+                <CompareIndexPage type="compare" />
               </Route>
-              <Route exact path="/compareCharts/:symbols">
-                <ComparePage />
+              <Route exact path="/compare/:symbols">
+                <ComparePage type="compare" />
               </Route>
               <Route
                 exact

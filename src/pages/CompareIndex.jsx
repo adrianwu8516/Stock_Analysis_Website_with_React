@@ -5,7 +5,7 @@ import SiteSider from "../components/SiteSider";
 const CompareIndexPage = () => {
   return (
     <>
-      <SiteSider type="compare_type" />
+      <SiteSider type="compare" />
       <Layout style={{ padding: "0 24px 24px" }}>
         <SiteBreadcrumb />
         <Content

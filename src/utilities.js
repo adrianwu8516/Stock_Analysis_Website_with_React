@@ -16,6 +16,10 @@ export const getStockListData = async (type) => {
   return finalList;
 };
 
+export const getCompareData = async (symbol_list) => {
+  return symbol_list;
+};
+
 // Temp
 
 function parseData(parse) {
