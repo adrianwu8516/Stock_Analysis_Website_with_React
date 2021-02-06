@@ -30,6 +30,9 @@ export default function App() {
               <Route exact path="/home">
                 <HomePage />
               </Route>
+              <Route exact path={`/:module_type/:list_type`}>
+                <StockListPage />
+              </Route>
               <Route
                 exact
                 path="/selected"
@@ -37,19 +40,13 @@ export default function App() {
                   return <Redirect to="/selected/beat_analysis" />;
                 }}
               ></Route>
-              <Route exact path={`/selected/:list_type`}>
-                <StockListPage type="selected" />
-              </Route>
               <Route
                 exact
                 path="/stocks"
                 render={() => {
-                  return <Redirect to="/stocks/energy" />;
+                  return <Redirect to="/stocks/EC" />;
                 }}
               ></Route>
-              <Route exact path="/stocks/:list_type">
-                <StockListPage type="stocks" />
-              </Route>
               <Route exact path="/:module_type/:list_type/:symbol">
                 <StockInfoPage />
               </Route>

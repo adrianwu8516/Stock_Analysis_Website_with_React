@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { getStockListData } from "../utilities";
 
-export const useStockListState = (listType) => {
+export const useStockListState = (module_type, list_type) => {
   const [stockListState, setStockListState] = useState({
     loading: true,
     error: null,
     data: null
   });
   useEffect(() => {
-    getStockListData(listType)
+    getStockListData(module_type, list_type)
       .then((data) => {
         if (!data) {
           setStockListState({
@@ -32,6 +32,6 @@ export const useStockListState = (listType) => {
           loading: false
         });
       });
-  }, [listType]);
+  }, [list_type]);
   return stockListState;
 };

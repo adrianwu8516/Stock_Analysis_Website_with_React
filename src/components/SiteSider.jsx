@@ -1,47 +1,44 @@
-import { Layout, Menu, Skeleton } from "antd";
-import { Link, Switch, Route, useRouteMatch } from "react-router-dom";
+import { Layout, Menu } from "antd";
+import SubMenu from "antd/lib/menu/SubMenu";
+import { Link } from "react-router-dom";
 import { useSiderState } from "../hook/siteSider.js";
-import StockInfoPage from "../pages/StockInfoPage.jsx";
-import NotFound from "./NotFound.jsx";
+import stateCheck from "./StateCheck.jsx";
 const { Sider } = Layout;
 
 const SiteSider = ({ type }) => {
   const siderState = useSiderState(type);
-  const siderDetails = siderState.data;
-  //let { path, url } = useRouteMatch();
-  if (siderState.error) {
-    return <NotFound />;
-  }
-  if (siderState.loading || !siderState.data) {
-    return <Skeleton />;
-  }
+  const { error, loading } = stateCheck(siderState);
+  const items = siderState.data ? (
+    <>
+      {siderState.data.item.map((obj) => (
+        <SubMenu key={obj.group_id} title={obj.group_name}>
+          {obj.group_item.map((subObj) => (
+            <Menu.Item key={subObj.param}>
+              <Link to={`/${siderState.data.key}/${subObj.param}`}>
+                {subObj.key}
+              </Link>
+            </Menu.Item>
+          ))}
+        </SubMenu>
+      ))}
+    </>
+  ) : null;
   return (
     <>
       <Sider width={200} className="site-layout-background">
         <Menu
           mode="inline"
-          defaultSelectedKeys={["1"]}
-          defaultOpenKeys={["1"]}
+          defaultOpenKeys={[
+            "software",
+            "selected_index",
+            "compare_group",
+            "time_span"
+          ]}
           style={{ height: "100%", borderRight: 0 }}
         >
-          <Menu.Item key="title" disabled={true}>
-            <b>{siderDetails.group_name}</b>
-          </Menu.Item>
-          {siderDetails.item.map((obj) => (
-            <Menu.Item key={obj.param}>
-              <Link to={`/${siderDetails.key}/${obj.param}`}>{obj.key}</Link>
-            </Menu.Item>
-          ))}
+          {error ? error : loading ? loading : items}
         </Menu>
       </Sider>
-      {/* <Switch>
-        <Route path={`/${siderDetails.key}/:list_type`}>
-          <StockInfoPage />
-        </Route>
-        <Route exact path={path}>
-          <h3>Please select a topic.</h3>
-        </Route>
-      </Switch> */}
     </>
   );
 };

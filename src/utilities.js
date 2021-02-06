@@ -8,10 +8,13 @@ export const getSider = async (type) => {
   return siderItem[type];
 };
 
-export const getStockListData = async (type) => {
+export const getStockListData = async (module, type) => {
   const finalList = [];
-  Object.keys(stockListData[type]).forEach((item) => {
-    finalList.push(stockListData[type][item]);
+  const stockListData = await axios.get(
+    `https://script.google.com/macros/s/AKfycbzeVZOrXXcNvGQ4PyDyjcrFX6g7vVOHGpuGujcTBhUteSab_pRZWxyZ/exec?mode=${module}&type=${type}`
+  );
+  Object.keys(stockListData.data).forEach((item) => {
+    finalList.push(stockListData.data[item]);
   });
   return finalList;
 };

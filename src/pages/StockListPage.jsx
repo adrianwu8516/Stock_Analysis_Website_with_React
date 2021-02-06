@@ -6,7 +6,7 @@ import SiteSider from "../components/SiteSider";
 import stateCheck from "../components/StateCheck";
 import { useStockListState } from "../hook/stockList";
 
-const StockListPage = ({ type }) => {
+const StockListPage = () => {
   const location = useLocation();
   const pathList = location.pathname.split("/");
   const columns = [
@@ -38,7 +38,7 @@ const StockListPage = ({ type }) => {
     {
       title: "股價",
       dataIndex: "price",
-      width: 80,
+      width: 100,
       sorter: (a, b) => a.price - b.price
     },
     {
@@ -192,12 +192,12 @@ const StockListPage = ({ type }) => {
     console.log("params", pagination, filters, sorter, extra);
   }
 
-  const { list_type } = useParams();
-  const stockListState = useStockListState(list_type);
+  const { module_type, list_type } = useParams();
+  const stockListState = useStockListState(module_type, list_type);
   const { error, loading } = stateCheck(stockListState);
   return (
     <>
-      <SiteSider type={type} />
+      <SiteSider type={module_type} />
       <Layout style={{ padding: "0 24px 24px" }}>
         <SiteBreadcrumb />
         {error ? (

@@ -6,7 +6,7 @@ import { TypeChooser } from "react-stockcharts/lib/helper";
 import SiteSider from "../components/SiteSider";
 import Layout from "antd/lib/layout/layout";
 import SiteBreadcrumb from "../components/SiteBreadcrumb";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 class ChartComponent extends React.Component {
   componentDidMount() {
@@ -27,13 +27,11 @@ class ChartComponent extends React.Component {
 }
 
 const StockInfoPage = () => {
-  const { module_type, list_type, symbol } = useParams();
-  const location = useLocation();
-  const type = location.pathname.split("/")[1];
-  console.log("InfoPage", type);
+  const { module_type } = useParams();
+  console.log("InfoPage", module_type);
   return (
     <>
-      <SiteSider type={type} />
+      <SiteSider type={module_type} />
       <Layout style={{ padding: "0 24px 24px" }}>
         <SiteBreadcrumb />
         <ChartComponent />

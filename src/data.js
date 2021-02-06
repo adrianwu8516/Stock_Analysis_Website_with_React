@@ -1,40 +1,106 @@
 const siderItem = {
   selected: {
     key: "selected",
-    group_name: "指標分類",
     item: [
-      { key: "擊敗分析師預期", param: "beat_analysis" },
-      { key: "落後分析師預期", param: "lose_analysis" },
-      { key: "優質財報", param: "nice_finance" },
-      { key: "高增長低估值(PEG)", param: "nice_peg" }
+      {
+        group_name: "指標分類",
+        group_id: "selected_index",
+        group_item: [
+          { key: "擊敗分析師預期", param: "beat_analysis" },
+          { key: "落後分析師預期", param: "lose_analysis" },
+          { key: "優質財報", param: "nice_finance" },
+          { key: "高增長低估值(PEG)", param: "nice_peg" }
+        ]
+      }
     ]
   },
   stocks: {
     key: "stocks",
-    group_name: "股票分類",
     item: [
-      { key: "能源股", param: "energy" },
-      { key: "工業股", param: "industries" },
-      { key: "國防軍工", param: "military" },
-      { key: "IC設計", param: "ic" }
+      {
+        group_name: "軟體行業",
+        group_id: "software",
+        group_item: [
+          { key: "電商股", param: "EC" },
+          { key: "網路股", param: "Internet" },
+          { key: "線上服務", param: "SaaS" },
+          { key: "金融科技", param: "FinTech" },
+          { key: "串流服務", param: "Streaming" },
+          { key: "社交服務", param: "SNS" },
+          { key: "廣告技術", param: "AdTech" },
+          { key: "IT集團", param: "ITSolution" },
+          { key: "遊戲股", param: "Gaming" },
+          { key: "中概股", param: "ChinaConcept" }
+        ]
+      },
+      {
+        group_name: "工業",
+        group_id: "industry",
+        group_item: [
+          { key: "IC設計", param: "IC" },
+          { key: "硬體設備", param: "Hardware" },
+          { key: "電信股", param: "Telecom" },
+          { key: "工業股", param: "industries" },
+          { key: "國防軍工", param: "Military" },
+          { key: "航天航空", param: "Aerospace" },
+          { key: "能源類股", param: "Energy" },
+          { key: "新能源", param: "NewEnergy" },
+          { key: "交通運輸", param: "Transport" },
+          { key: "電池股", param: "Battery" },
+          { key: "重化工業", param: "Industry" },
+          { key: "礦業", param: "Mining" },
+          { key: "石墨烯", param: "Graphene" }
+        ]
+      },
+      {
+        group_name: "傳統產業",
+        group_id: "tradition",
+        group_item: [
+          { key: "教育股", param: "Edu" },
+          { key: "旅遊股", param: "Traveling" },
+          { key: "寵物股", param: "Pets" },
+          { key: "大麻股", param: "Cannabis" },
+          { key: "農業技術", param: "ArgiTech" },
+          { key: "健康產業", param: "Health" },
+          { key: "醫藥股", param: "Medicine" },
+          { key: "時尚產業", param: "Fashion" },
+          { key: "餐飲股", param: "Catering" },
+          { key: "瘦身健身", param: "Diet" },
+          { key: "線下零售", param: "Retailing" },
+          { key: "金融業", param: "Finance" },
+          { key: "房地產", param: "RealEstate" },
+          { key: "物流股", param: "Logistics" },
+          { key: "日常用品", param: "DailyLife" }
+        ]
+      }
     ]
   },
   compare: {
     key: "compare",
-    group_name: "類股組別",
     item: [
-      { key: "遊戲股族群", param: "gaming" },
-      { key: "石化股族群", param: "petroleum" },
-      { key: "IC設計族群", param: "ic_design" },
-      { key: "國防工業", param: "military" }
+      {
+        group_name: "類股組別",
+        group_id: "compare_group",
+        group_item: [
+          { key: "遊戲股族群", param: "gaming" },
+          { key: "石化股族群", param: "petroleum" },
+          { key: "IC設計族群", param: "ic_design" },
+          { key: "國防工業", param: "military" }
+        ]
+      }
     ]
   },
   macro: {
     key: "macro",
-    group_name: "時間維度",
     item: [
-      { key: "每日追蹤", param: "daily" },
-      { key: "月度/季度資訊", param: "monthly" }
+      {
+        group_name: "時間維度",
+        group_id: "time_span",
+        group_item: [
+          { key: "每日追蹤", param: "daily" },
+          { key: "月度/季度資訊", param: "monthly" }
+        ]
+      }
     ]
   }
 };
