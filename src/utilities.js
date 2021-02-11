@@ -1,8 +1,16 @@
 import axios from "axios";
-import { siderItem, stockListData } from "./data.js";
-// Temp
-import { tsvParse, csvParse } from "d3-dsv";
-import { timeParse } from "d3-time-format";
+import { siderItem } from "./data.js";
+
+const domain =
+  "https://script.google.com/macros/s/AKfycbzeVZOrXXcNvGQ4PyDyjcrFX6g7vVOHGpuGujcTBhUteSab_pRZWxyZ/exec";
+
+const parseTime = (objList) => {
+  const value = objList.map((obj) => ({
+    ...obj,
+    date: new Date(Date.parse(obj.date))
+  }));
+  return value;
+};
 
 export const getSider = async (type) => {
   return siderItem[type];
@@ -11,7 +19,7 @@ export const getSider = async (type) => {
 export const getStockListData = async (module, type) => {
   const finalList = [];
   const stockListData = await axios.get(
-    `https://script.google.com/macros/s/AKfycbzeVZOrXXcNvGQ4PyDyjcrFX6g7vVOHGpuGujcTBhUteSab_pRZWxyZ/exec?mode=${module}&type=${type}`
+    `${domain}?mode=${module}&type=${type}`
   );
   Object.keys(stockListData.data).forEach((item) => {
     finalList.push(stockListData.data[item]);
@@ -23,28 +31,24 @@ export const getCompareData = async (symbol_list) => {
   return symbol_list;
 };
 
-// Temp
+export const getStockData = async () => {
+  const stockData = await axios
+    .get(`${domain}?mode=stock&symbol=jd`)
+    .then((response) => response.data)
+    .then((data) => parseTime(data));
+  return stockData;
+};
 
-function parseData(parse) {
-  return function (d) {
-    d.date = parse(d.date);
-    d.open = +d.open;
-    d.high = +d.high;
-    d.low = +d.low;
-    d.close = +d.close;
-    d.volume = +d.volume;
+export const getStockDetailData = async () => {
+  const stockDetailData = await axios
+    .get(`${domain}?mode=stockDetail&type=${type}`)
+    .then((response) => response.data);
+  return stockDetailData;
+};
 
-    return d;
-  };
-}
-
-const parseDate = timeParse("%Y-%m-%d");
-
-export function getData() {
-  const promiseMSFT = fetch(
-    "https://cdn.rawgit.com/rrag/react-stockcharts/master/docs/data/MSFT.tsv"
-  )
-    .then((response) => response.text())
-    .then((data) => tsvParse(data, parseData(parseDate)));
-  return promiseMSFT;
-}
+export const getStockFRData = async () => {
+  const stockFRData = await axios
+    .get(`${domain}?mode=stockFR&type=${type}`)
+    .then((response) => response.data);
+  return stockFRData;
+};

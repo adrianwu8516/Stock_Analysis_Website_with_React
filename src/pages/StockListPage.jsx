@@ -28,7 +28,7 @@ const StockListPage = () => {
       width: 150,
       render: (companyName, row) => (
         <Link
-          to={`/${pathList[1]}/${pathList[2]}/${row.symbol}`}
+          to={`/${pathList[1]}/${pathList[2]}/${row.symbol.toLowerCase()}`}
           key={`${pathList[2]}/${row.symbol}`}
         >
           {companyName}

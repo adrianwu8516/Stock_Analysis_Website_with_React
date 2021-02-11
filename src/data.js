@@ -6,10 +6,17 @@ const siderItem = {
         group_name: "指標分類",
         group_id: "selected_index",
         group_item: [
-          { key: "擊敗分析師預期", param: "beat_analysis" },
-          { key: "落後分析師預期", param: "lose_analysis" },
-          { key: "優質財報", param: "nice_finance" },
-          { key: "高增長低估值(PEG)", param: "nice_peg" }
+          { key: "突破52週新高", param: "NewHight" },
+          { key: "良好財報", param: "NiceFinancialReport" },
+          { key: "擊敗分析師預期", param: "BeatEst" },
+          { key: "落後分析師預期", param: "FailEst" },
+          { key: "高成長低估值", param: "NicePEG" },
+          { key: "達到股價支撐", param: "Supporting" },
+          { key: "成交量衝高", param: "HighVolume" },
+          { key: "低於未來現金流估值", param: "DCF" },
+          { key: "低於葛拉漢估值", param: "Graham" },
+          { key: "低於彼得林奇估值", param: "Lynch" },
+          { key: "資本資金運用效率高", param: "ROIC-WACC" }
         ]
       }
     ]
