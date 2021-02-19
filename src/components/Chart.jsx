@@ -30,7 +30,6 @@ import { ema, sma, bollingerBand } from "react-stockcharts/lib/indicator";
 import { fitWidth } from "react-stockcharts/lib/helper";
 import { last } from "react-stockcharts/lib/utils";
 
-
 const bbStroke = {
   top: "#964B00",
   middle: "#000000",
@@ -258,4 +257,3 @@ CandleStickChartWithBollingerBandOverlay = fitWidth(
 );
 
 export default CandleStickChartWithBollingerBandOverlay;
-

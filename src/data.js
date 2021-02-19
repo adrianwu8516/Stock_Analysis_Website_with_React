@@ -105,7 +105,8 @@ const siderItem = {
         group_id: "time_span",
         group_item: [
           { key: "每日追蹤", param: "daily" },
-          { key: "月度/季度資訊", param: "monthly" }
+          { key: "月度追蹤", param: "monthly" },
+          { key: "季度追蹤", param: "quarterly" }
         ]
       }
     ]

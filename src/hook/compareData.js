@@ -1,37 +1,20 @@
 import { useEffect, useState } from "react";
-import { getCompareData } from "../utilities";
 
-export const useCompareDataState = (compare_list) => {
-  const [compareDataState, setCompareDataState] = useState({
-    loading: true,
-    error: null,
-    data: null
-  });
+export const useCompareDataState = (symbol_list) => {
+  const [compareDataState, setCompareDataState] = useState([]);
   useEffect(() => {
-    getCompareData(compare_list)
-      .then((data) => {
-        if (!data) {
-          setCompareDataState({
-            ...compareDataState,
-            error: "No Data",
-            loading: false
-          });
-        } else {
-          setCompareDataState({
-            data: data,
-            error: null,
-            loading: false
-          });
-        }
-      })
+    asyncFetch(symbol_list);
+  }, []);
+  const asyncFetch = (symbol_list) => {
+    fetch(
+      `https://script.google.com/macros/s/AKfycbzeVZOrXXcNvGQ4PyDyjcrFX6g7vVOHGpuGujcTBhUteSab_pRZWxyZ/exec?mode=compareStock&symbol_list=${symbol_list}`
+    )
+      .then((response) => response.json())
+      .then((json) => setCompareDataState(json))
       .catch((error) => {
-        console.log("setCompareDataState Fail");
-        setCompareDataState({
-          ...compareDataState,
-          error: error,
-          loading: false
-        });
+        console.log("fetch CompareDataState failed", error);
       });
-  }, [compare_list]);
+  };
+
   return compareDataState;
 };

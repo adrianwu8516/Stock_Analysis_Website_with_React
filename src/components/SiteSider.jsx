@@ -2,12 +2,10 @@ import { Layout, Menu } from "antd";
 import SubMenu from "antd/lib/menu/SubMenu";
 import { Link } from "react-router-dom";
 import { useSiderState } from "../hook/siteSider.js";
-import stateCheck from "./StateCheck.jsx";
 const { Sider } = Layout;
 
 const SiteSider = ({ type }) => {
   const siderState = useSiderState(type);
-  const { error, loading } = stateCheck(siderState);
   const items = siderState.data ? (
     <>
       {siderState.data.item.map((obj) => (
@@ -36,7 +34,7 @@ const SiteSider = ({ type }) => {
           ]}
           style={{ height: "100%", borderRight: 0 }}
         >
-          {error ? error : loading ? loading : items}
+          {items}
         </Menu>
       </Sider>
     </>

@@ -1,8 +1,13 @@
 import Layout, { Content } from "antd/lib/layout/layout";
+import { useParams } from "react-router-dom";
+import MacroDailyCharts from "../components/MacroDailyCharts";
+import MacroMonthlyCharts from "../components/MacroMonthlyCharts";
+import MacroQuarterlyCharts from "../components/MacroQuarterlyCharts";
 import SiteBreadcrumb from "../components/SiteBreadcrumb";
 import SiteSider from "../components/SiteSider";
 
 const MacroPage = () => {
+  const { type } = useParams();
   return (
     <>
       <SiteSider type="macro" />
@@ -16,11 +21,16 @@ const MacroPage = () => {
             minHeight: 900
           }}
         >
-          <p>Macro</p>
+          {type == "daily" ? (
+            <MacroDailyCharts />
+          ) : type == "monthly" ? (
+            <MacroMonthlyCharts />
+          ) : type == "quarterly" ? (
+            <MacroQuarterlyCharts />
+          ) : null}
         </Content>
       </Layout>
     </>
   );
 };
-
 export default MacroPage;

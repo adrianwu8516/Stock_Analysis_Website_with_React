@@ -1,12 +1,13 @@
-import { Table } from "antd";
+import { Spin, Table } from "antd";
 import Layout, { Content } from "antd/lib/layout/layout";
 import { Link, useLocation, useParams } from "react-router-dom";
+import NoData from "../components/NoData";
+import NotFound from "../components/NotFound";
 import SiteBreadcrumb from "../components/SiteBreadcrumb";
 import SiteSider from "../components/SiteSider";
-import stateCheck from "../components/StateCheck";
 import { useStockListState } from "../hook/stockList";
 
-const StockListPage = () => {
+const StockListPage = ({ module_type }) => {
   const location = useLocation();
   const pathList = location.pathname.split("/");
   const columns = [
@@ -192,9 +193,17 @@ const StockListPage = () => {
     console.log("params", pagination, filters, sorter, extra);
   }
 
-  const { module_type, list_type } = useParams();
+  const { list_type } = useParams();
   const stockListState = useStockListState(module_type, list_type);
-  const { error, loading } = stateCheck(stockListState);
+  const error =
+    stockListState.error === null ? null : stockListState.error ===
+      "No Data" ? (
+      <NoData />
+    ) : (
+      <NotFound />
+    );
+  const loading =
+    stockListState.loading || !stockListState.data ? <Spin /> : null;
   return (
     <>
       <SiteSider type={module_type} />

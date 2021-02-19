@@ -25,7 +25,7 @@ export const useStockFRState = (symbol) => {
         }
       })
       .catch((error) => {
-        console.log("setStockFRData Fail");
+        console.log("setStockFRData Fail: ", error);
         setStockFRState({
           ...stockFRState,
           error: error,

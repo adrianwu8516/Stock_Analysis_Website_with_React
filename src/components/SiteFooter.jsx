@@ -1,7 +1,5 @@
 import { Layout } from "antd";
-import styled from "styled-components";
 const { Footer } = Layout;
-
 const SiteFooter = () => {
   return (
     <Footer className="footer" style={{ textAlign: "center" }}>
