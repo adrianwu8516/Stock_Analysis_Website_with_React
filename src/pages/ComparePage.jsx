@@ -1,18 +1,17 @@
 import Layout, { Content } from "antd/lib/layout/layout";
 import { useParams } from "react-router-dom";
-import CompareCharts from "../components/CompareCharts";
+import CompareStockCharts from "../components/CompareStockCharts";
 import CompareDetails from "../components/CompareDetails";
 import SiteBreadcrumb from "../components/SiteBreadcrumb";
 import SiteSider from "../components/SiteSider";
+import { Col, Row } from "antd";
+import { comparePairIndex } from "../data";
 
 const ComparePage = () => {
   const { symbols } = useParams();
-  let symbol_list = [];
-  // change to case when
-  if (symbols === "gaming") {
-    symbol_list = "aapl,msft,jd,pdd";
-  }
-  console.log(symbol_list);
+  const symbol_list = comparePairIndex[symbols]
+    ? comparePairIndex[symbols]
+    : symbols;
   return (
     <>
       <SiteSider type="compare" />
@@ -26,8 +25,14 @@ const ComparePage = () => {
             minHeight: 900
           }}
         >
-          <CompareDetails symbol_list={symbol_list} />
-          {/* <CompareCharts symbol_list={symbol_list} /> */}
+          <Row justify="center">
+            <Col span={18}>
+              <CompareStockCharts symbol_list={symbol_list} />
+            </Col>
+          </Row>
+          <Row justify="center">
+            <CompareDetails symbol_list={symbol_list} />
+          </Row>
         </Content>
       </Layout>
     </>

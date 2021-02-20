@@ -1,3 +1,4 @@
+import { Row } from "antd";
 import Layout, { Content } from "antd/lib/layout/layout";
 
 const HomePage = () => {
@@ -12,7 +13,9 @@ const HomePage = () => {
             minHeight: 900
           }}
         >
-          <p>Home</p>
+          <Row justify="center">
+            <img src="https://i.imgur.com/DRENNcL.png" />
+          </Row>
         </Content>
       </Layout>
     </>

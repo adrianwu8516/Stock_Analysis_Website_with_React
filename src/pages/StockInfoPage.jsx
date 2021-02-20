@@ -1,5 +1,4 @@
 import React from "react";
-import { getStockData } from "../utilities";
 import Chart from "../components/Chart";
 import { TypeChooser } from "react-stockcharts/lib/helper";
 import SiteSider from "../components/SiteSider";
@@ -8,36 +7,29 @@ import { useParams } from "react-router-dom";
 import { Layout } from "antd";
 import StockDetailInfoTable from "../components/StockDetailInfoTableSection";
 import StockFRChartsSection from "../components/StockFRChartsSection";
-
-class ChartComponent extends React.Component {
-  componentDidMount() {
-    getStockData().then((data) => {
-      this.setState({ data });
-    });
-  }
-  render() {
-    if (this.state == null) {
-      return <div>Loading...</div>;
-    }
-    return (
-      <TypeChooser>
-        {(type) => <Chart type={type} data={this.state.data} />}
-      </TypeChooser>
-    );
-  }
-}
+import { useStockChartState } from "../hook/stockChart";
 
 const StockInfoPage = () => {
   const { module_type, symbol } = useParams();
-  console.log("InfoPage", symbol);
+  const { data, loading, error } = useStockChartState(symbol);
   return (
     <>
       <SiteSider type={module_type} />
       <Layout style={{ padding: "0 24px 24px" }}>
         <SiteBreadcrumb />
+        <h2>{symbol.toUpperCase()} 詳細財務數據</h2>
         <StockDetailInfoTable symbol={symbol} />
-        {/* <StockFRChartsSection symbol={symbol} /> */}
-        <ChartComponent />
+        <StockFRChartsSection symbol={symbol} />
+        <h2>{symbol.toUpperCase()} 股價走勢</h2>
+        {error ? (
+          error
+        ) : loading ? (
+          loading
+        ) : (
+          <TypeChooser>
+            {(type) => <Chart type={type} data={data} />}
+          </TypeChooser>
+        )}
       </Layout>
     </>
   );
