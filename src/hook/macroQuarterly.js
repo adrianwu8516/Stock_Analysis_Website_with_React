@@ -1,19 +1,29 @@
 import { useEffect, useState } from "react";
+import { getMacorQuarterlyData } from "../utilities";
 
 export const useMacorQuarterlyState = () => {
-  const [macorQuarterlyState, setMacorQuarterlyState] = useState([]);
+  const [macorQuarterlyState, setMacorQuarterlyState] = useState({
+    loading: true,
+    error: null,
+    data: null
+  });
   useEffect(() => {
-    asyncFetch();
-  }, []);
-  const asyncFetch = () => {
-    fetch(
-      "https://script.google.com/macros/s/AKfycbzeVZOrXXcNvGQ4PyDyjcrFX6g7vVOHGpuGujcTBhUteSab_pRZWxyZ/exec?mode=macro&type=quarterly"
-    )
-      .then((response) => response.json())
-      .then((json) => setMacorQuarterlyState(json))
+    getMacorQuarterlyData()
+      .then((res) =>
+        setMacorQuarterlyState({
+          loading: null,
+          error: null,
+          data: res.data
+        })
+      )
       .catch((error) => {
         console.log("fetch MacorQuarterlyState failed", error);
+        setMacorQuarterlyState({
+          loading: false,
+          error: error,
+          data: null
+        });
       });
-  };
+  }, []);
   return macorQuarterlyState;
 };

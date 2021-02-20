@@ -1,49 +1,70 @@
 import { useCompareDetailState } from "../hook/compareDetail";
-import { Row, Table } from "antd";
+import { Row, Table, Skeleton } from "antd";
+import NoData from "./NoData";
+import NotFound from "./NotFound";
+import styled from "styled-components";
+
+const StyledSection = styled.div`
+  .compareDetailTable {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 100%;
+  }
+`;
 
 const CompareDetails = ({ symbol_list }) => {
   let compareDetailState = useCompareDetailState(symbol_list);
-  console.log(compareDetailState.columns);
-  // const error =
-  //   compareDetailState.error === null ? null : compareDetailState.error ===
-  //     "No Data" ? (
-  //     <NoData />
-  //   ) : (
-  //     <NotFound />
-  //   );
-  // const loading =
-  //   compareDetailState.loading || !compareDetailState.data ? <Spin /> : null;
-
-  return (
-    <>
-      <Row>
+  const error =
+    compareDetailState.error === null ? null : compareDetailState.error ===
+      "No Data" ? (
+      <NoData />
+    ) : (
+      <NotFound />
+    );
+  const loading =
+    compareDetailState.loading || !compareDetailState.data ? (
+      <Skeleton />
+    ) : null;
+  return error ? (
+    error
+  ) : loading ? (
+    loading
+  ) : (
+    <StyledSection>
+      <Row justify="center">
         <Table
-          columns={compareDetailState.columns.valuation}
-          dataSource={compareDetailState.aggrData.valuation}
+          className="compareDetailTable"
+          columns={compareDetailState.data.columns.valuation}
+          dataSource={compareDetailState.data.aggrData.valuation}
           size="small"
           bordered
           pagination={false}
+          scroll={{ x: 1000 }}
         />
       </Row>
-      <Row>
+      <Row justify="center">
         <Table
-          columns={compareDetailState.columns.analysis}
-          dataSource={compareDetailState.aggrData.analysis}
+          className="compareDetailTable"
+          columns={compareDetailState.data.columns.analysis}
+          dataSource={compareDetailState.data.aggrData.analysis}
           size="small"
           bordered
           pagination={false}
+          scroll={{ x: 1000 }}
         />
       </Row>
-      <Row>
+      <Row justify="center">
         <Table
-          columns={compareDetailState.columns.forecast}
-          dataSource={compareDetailState.aggrData.forecast}
+          className="compareDetailTable"
+          columns={compareDetailState.data.columns.forecast}
+          dataSource={compareDetailState.data.aggrData.forecast}
           size="small"
           bordered
           pagination={false}
+          scroll={{ x: 1000 }}
         />
       </Row>
-    </>
+    </StyledSection>
   );
 };
 

@@ -1,37 +1,37 @@
 import { useEffect, useState } from "react";
-import { getStockFRData } from "../utilities";
+import { getStockChartData } from "../utilities";
 
-export const useStockFRState = (symbol) => {
-  const [stockFRState, setStockFRState] = useState({
+export const useStockChartState = (symbol) => {
+  const [stockChartState, setStockChartState] = useState({
     loading: true,
     error: null,
     data: null
   });
   useEffect(() => {
-    getStockFRData(symbol)
+    getStockChartData(symbol)
       .then((res) => {
         if (!res) {
-          setStockFRState({
-            ...stockFRState,
+          setStockChartState({
+            ...stockChartState,
             error: "No Data",
             loading: false
           });
         } else {
-          setStockFRState({
-            data: res.data,
+          setStockChartState({
+            data: res,
             error: null,
             loading: false
           });
         }
       })
       .catch((error) => {
-        console.log("setStockFRData Fail: ", error);
-        setStockFRState({
-          ...stockFRState,
+        console.log("setStockChartData Fail: ", error);
+        setStockChartState({
+          ...stockChartState,
           error: error,
           loading: false
         });
       });
   }, [symbol]);
-  return stockFRState;
+  return stockChartState;
 };

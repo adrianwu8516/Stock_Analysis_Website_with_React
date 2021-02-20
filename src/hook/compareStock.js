@@ -1,29 +1,29 @@
 import { useEffect, useState } from "react";
-import { getCompareFRData } from "../utilities";
+import { getCompareStockData } from "../utilities";
 
-export const useCompareFRState = (symbol_list) => {
-  const [compareFRState, setCompareFRState] = useState({
+export const useCompareStockState = (symbol_list) => {
+  const [compareStockState, setCompareStockState] = useState({
     loading: true,
     error: null,
     data: null
   });
   useEffect(() => {
-    getCompareFRData(symbol_list)
+    getCompareStockData(symbol_list)
       .then((res) =>
-        setCompareFRState({
+        setCompareStockState({
           loading: null,
           error: null,
           data: res.data
         })
       )
       .catch((error) => {
-        console.log("fetch compareFRState failed", error);
-        setCompareFRState({
+        console.log("fetch compareStockState failed", error);
+        setCompareStockState({
           loading: false,
           error: error,
           data: null
         });
       });
   }, [symbol_list]);
-  return compareFRState;
+  return compareStockState;
 };

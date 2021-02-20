@@ -9,8 +9,8 @@ export const useStockDetailState = (symbol) => {
   });
   useEffect(() => {
     getStockDetailData(symbol)
-      .then((data) => {
-        if (!data) {
+      .then((res) => {
+        if (!res) {
           setStockDetailState({
             ...stockDetailState,
             error: "No Data",
@@ -18,7 +18,7 @@ export const useStockDetailState = (symbol) => {
           });
         } else {
           setStockDetailState({
-            data: data,
+            data: res.data,
             error: null,
             loading: false
           });

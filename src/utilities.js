@@ -12,9 +12,13 @@ const parseTime = (objList) => {
   return value;
 };
 
+// Sider
+
 export const getSider = async (type) => {
   return siderItem[type];
 };
+
+// Stock List API Connection
 
 export const getStockListData = async (module, type) => {
   const finalList = [];
@@ -27,33 +31,68 @@ export const getStockListData = async (module, type) => {
   return finalList;
 };
 
-// export const getCompareData = async (symbol_list) => {
-//   const compareData = await axios
-//     .get(
-//       "https://gw.alipayobjects.com/os/bmw-prod/55424a73-7cb8-4f79-b60d-3ab627ac5698.json"
-//     )
-//     .then((response) => response.data);
-//   return compareData;
-// };
+// Single Stock API Connection
 
-export const getStockData = async () => {
-  const stockData = await axios
-    .get(`${domain}?mode=stock&symbol=jd`)
+export const getStockChartData = async (symbol) => {
+  const stockChartData = await axios
+    .get(`${domain}?mode=stock&symbol=${symbol}`)
     .then((response) => response.data)
     .then((data) => parseTime(data));
-  return stockData;
+  return stockChartData;
 };
 
 export const getStockDetailData = async (symbol) => {
-  const stockDetailData = await axios
-    .get(`${domain}?mode=stockDetail&symbol=${symbol}`)
-    .then((response) => response.data);
+  const stockDetailData = await axios.get(
+    `${domain}?mode=stockDetail&symbol=${symbol}`
+  );
   return stockDetailData;
 };
 
 export const getStockFRData = async (symbol) => {
-  const stockFRData = await axios
-    .get(`${domain}?mode=stockFR&symbol=${symbol}`)
-    .then((response) => response.data);
+  const stockFRData = await axios.get(
+    `${domain}?mode=stockFR&symbol=${symbol}`
+  );
   return stockFRData;
+};
+
+// Macro API Connection
+
+export const getMacorDailyData = async () => {
+  const macorDailyData = await axios.get(`${domain}?mode=macro&type=daily`);
+  return macorDailyData;
+};
+
+export const getMacorMonthlyData = async () => {
+  const macorMonthlyData = await axios.get(`${domain}?mode=macro&type=monthly`);
+  return macorMonthlyData;
+};
+
+export const getMacorQuarterlyData = async () => {
+  const macorQuarterlyData = await axios.get(
+    `${domain}?mode=macro&type=quarterly`
+  );
+  return macorQuarterlyData;
+};
+
+// Compare API Connection
+
+export const getCompareStockData = async (symbol_list) => {
+  const compareData = await axios.get(
+    `${domain}?mode=compareStock&symbol_list=${symbol_list}`
+  );
+  return compareData;
+};
+
+export const getCompareDetailData = async (symbol_list) => {
+  const compareDetailData = await axios.get(
+    `${domain}?mode=compareDetail&symbol_list=${symbol_list}`
+  );
+  return compareDetailData;
+};
+
+export const getCompareFRData = async (symbol_list) => {
+  const compareFRData = await axios.get(
+    `${domain}?mode=compareFR&symbol_list=${symbol_list}`
+  );
+  return compareFRData;
 };

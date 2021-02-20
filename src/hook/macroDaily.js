@@ -1,19 +1,29 @@
 import { useEffect, useState } from "react";
+import { getMacorDailyData } from "../utilities";
 
 export const useMacorDailyState = () => {
-  const [macorDailyState, setMacorDailyState] = useState([]);
+  const [macorDailyState, setMacorDailyState] = useState({
+    loading: true,
+    error: null,
+    data: null
+  });
   useEffect(() => {
-    asyncFetch();
-  }, []);
-  const asyncFetch = () => {
-    fetch(
-      "https://script.google.com/macros/s/AKfycbzeVZOrXXcNvGQ4PyDyjcrFX6g7vVOHGpuGujcTBhUteSab_pRZWxyZ/exec?mode=macro&type=daily"
-    )
-      .then((response) => response.json())
-      .then((json) => setMacorDailyState(json))
+    getMacorDailyData()
+      .then((res) =>
+        setMacorDailyState({
+          loading: null,
+          error: null,
+          data: res.data
+        })
+      )
       .catch((error) => {
         console.log("fetch MacorDailyState failed", error);
+        setMacorDailyState({
+          loading: false,
+          error: error,
+          data: null
+        });
       });
-  };
+  }, []);
   return macorDailyState;
 };

@@ -1,19 +1,29 @@
 import { useEffect, useState } from "react";
+import { getMacorMonthlyData } from "../utilities";
 
 export const useMacorMonthlyState = () => {
-  const [macorMonthlyState, setMacorMonthlyState] = useState([]);
+  const [macorMonthlyState, setMacorMonthlyState] = useState({
+    loading: true,
+    error: null,
+    data: null
+  });
   useEffect(() => {
-    asyncFetch();
-  }, []);
-  const asyncFetch = () => {
-    fetch(
-      "https://script.google.com/macros/s/AKfycbzeVZOrXXcNvGQ4PyDyjcrFX6g7vVOHGpuGujcTBhUteSab_pRZWxyZ/exec?mode=macro&type=monthly"
-    )
-      .then((response) => response.json())
-      .then((json) => setMacorMonthlyState(json))
+    getMacorMonthlyData()
+      .then((res) =>
+        setMacorMonthlyState({
+          loading: null,
+          error: null,
+          data: res.data
+        })
+      )
       .catch((error) => {
         console.log("fetch MacorMonthlyState failed", error);
+        setMacorMonthlyState({
+          loading: false,
+          error: error,
+          data: null
+        });
       });
-  };
+  }, []);
   return macorMonthlyState;
 };

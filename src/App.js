@@ -53,8 +53,14 @@ export default function App() {
               <Route exact path="/:module_type/:list_type/:symbol">
                 <StockInfoPage />
               </Route>
-              <Route exact path="/compare">
-                <CompareIndexPage />
+              <Route
+                exact
+                path="/compare"
+                render={() => {
+                  return <Redirect to="/compare/gaming" />;
+                }}
+              >
+                {/* <CompareIndexPage /> */}
               </Route>
               <Route exact path="/compare/:symbols">
                 <ComparePage />

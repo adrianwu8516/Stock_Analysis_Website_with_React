@@ -1,20 +1,29 @@
 import { useEffect, useState } from "react";
+import { getCompareDetailData } from "../utilities";
 
 export const useCompareDetailState = (symbol_list) => {
-  const [compareDetailState, setCompareDetailState] = useState([]);
+  const [compareDetailState, setCompareDetailState] = useState({
+    loading: true,
+    error: null,
+    data: null
+  });
   useEffect(() => {
-    asyncFetch(symbol_list);
-  }, []);
-  const asyncFetch = (symbol_list) => {
-    fetch(
-      `https://script.google.com/macros/s/AKfycbzeVZOrXXcNvGQ4PyDyjcrFX6g7vVOHGpuGujcTBhUteSab_pRZWxyZ/exec?mode=compareDetail&symbol_list=${symbol_list}`
-    )
-      .then((response) => response.json())
-      .then((json) => setCompareDetailState(json))
+    getCompareDetailData(symbol_list)
+      .then((res) =>
+        setCompareDetailState({
+          loading: null,
+          error: null,
+          data: res.data
+        })
+      )
       .catch((error) => {
-        console.log("fetch CompareDetailState failed", error);
+        console.log("fetch compareDetailState failed", error);
+        setCompareDetailState({
+          loading: false,
+          error: error,
+          data: null
+        });
       });
-  };
-
+  }, [symbol_list]);
   return compareDetailState;
 };
