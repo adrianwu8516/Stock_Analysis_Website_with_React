@@ -49,7 +49,6 @@ const StockListPage = ({ module_type }) => {
       title: "52週高點",
       dataIndex: "52weekHigh",
       width: 120,
-      sorter: (a, b) => a.price - b.price,
       render: (number, row) =>
         number / row.price < 1.05 ? (
           <span style={{ backgroundColor: "green", color: "white" }}>
@@ -63,7 +62,6 @@ const StockListPage = ({ module_type }) => {
       title: "52週低點",
       dataIndex: "52weekLow",
       width: 120,
-      sorter: (a, b) => a.price - b.price,
       render: (number, row) =>
         row.price / number < 1.1 ? (
           <span style={{ backgroundColor: "red", color: "white" }}>
@@ -144,13 +142,13 @@ const StockListPage = ({ module_type }) => {
       title: "關注度",
       dataIndex: "analystPopularity",
       width: 80,
-      sorter: (a, b) => a.yield - b.yield
+      sorter: (a, b) => a.analystPopularity - b.analystPopularity
     },
     {
       title: "財務指標",
       dataIndex: "fscore",
       width: 90,
-      sorter: (a, b) => a.yield - b.yield,
+      sorter: (a, b) => a.fscore - b.fscore,
       render: (fscore) =>
         fscore <= 3 ? (
           <span style={{ color: "red" }}>{fscore}</span>
@@ -164,7 +162,7 @@ const StockListPage = ({ module_type }) => {
       title: "操縱指標",
       dataIndex: "mscore",
       width: 90,
-      sorter: (a, b) => a.yield - b.yield,
+      sorter: (a, b) => a.mscore - b.mscore,
       render: (mscore) =>
         mscore <= -2.22 ? (
           <span style={{ color: "green" }}>{mscore}</span>
@@ -178,7 +176,7 @@ const StockListPage = ({ module_type }) => {
       title: "破產指標",
       dataIndex: "zscore",
       width: 90,
-      sorter: (a, b) => a.yield - b.yield,
+      sorter: (a, b) => a.zscore - b.zscore,
       render: (zscore) =>
         zscore <= 1.81 ? (
           <span style={{ color: "green" }}>{zscore}</span>
@@ -244,9 +242,13 @@ const StockListPage = ({ module_type }) => {
         !ratio ? (
           <span></span>
         ) : ratio > 20 ? (
-          <span style={{ color: "red" }}>{ratio}%</span>
+          <span style={{ color: "red" }}>
+            <strong>{ratio}%</strong>
+          </span>
         ) : ratio < -10 ? (
-          <span style={{ color: "green" }}>{ratio}%</span>
+          <span style={{ color: "green" }}>
+            <strong>{ratio}%</strong>
+          </span>
         ) : (
           <span>{ratio}%</span>
         )
