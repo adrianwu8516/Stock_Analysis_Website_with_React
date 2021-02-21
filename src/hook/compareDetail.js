@@ -8,6 +8,11 @@ export const useCompareDetailState = (symbol_list) => {
     data: null
   });
   useEffect(() => {
+    setCompareDetailState({
+      loading: true,
+      error: null,
+      data: null
+    });
     getCompareDetailData(symbol_list)
       .then((res) =>
         setCompareDetailState({

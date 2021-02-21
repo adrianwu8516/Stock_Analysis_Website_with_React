@@ -3,6 +3,7 @@ import { useCompareStockState } from "../hook/compareStock";
 import { Col, Row, Skeleton } from "antd";
 import NoData from "./NoData";
 import NotFound from "./NotFound";
+import { colorSet } from "../data";
 
 const CompareStockCharts = ({ symbol_list }) => {
   const compareStockState = useCompareStockState(symbol_list);
@@ -14,8 +15,9 @@ const CompareStockCharts = ({ symbol_list }) => {
       <NotFound />
     );
   const loading =
-    compareStockState.loading || !compareStockState.data ? <Skeleton /> : null;
-
+    compareStockState.loading || !compareStockState.data ? (
+      <Skeleton active />
+    ) : null;
   return error ? (
     error
   ) : loading ? (
@@ -44,7 +46,7 @@ const CompareStockCharts = ({ symbol_list }) => {
                 }
               }
             }}
-            color={["#1979C9", "#D62A0D", "#FAA219"]}
+            color={colorSet}
           />
         </Col>
       </Row>
@@ -70,7 +72,7 @@ const CompareStockCharts = ({ symbol_list }) => {
                 }
               }
             }}
-            color={["#1979C9", "#D62A0D", "#FAA219"]}
+            color={colorSet}
           />
         </Col>
       </Row>

@@ -132,4 +132,15 @@ const comparePairIndex = {
   military: "lmt,ba,rtx,gd,noc"
 };
 
-export { siderItem, comparePairIndex };
+const colorSet = [
+  "#08979C",
+  "#FA8C16",
+  "#9E1068",
+  "#00474F",
+  "#FF353D",
+  "#FF4D4F",
+  "#7CB305",
+  "#95D464",
+  "#8C8C8C"
+];
+export { siderItem, comparePairIndex, colorSet };

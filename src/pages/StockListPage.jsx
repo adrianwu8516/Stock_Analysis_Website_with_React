@@ -15,11 +15,14 @@ const StockListPage = ({ module_type }) => {
       title: "代號",
       dataIndex: "symbol",
       fixed: "left",
-      width: 80,
+      width: 100,
       render: (symbol, row) => (
-        <a href={row.url} target="_blank" rel="noopener noreferrer">
+        <>
+          <a href={row.url} target="_blank" rel="noopener noreferrer">
+            🌐
+          </a>
           {symbol}
-        </a>
+        </>
       )
     },
     {
@@ -46,13 +49,29 @@ const StockListPage = ({ module_type }) => {
       title: "52週高點",
       dataIndex: "52weekHigh",
       width: 120,
-      sorter: (a, b) => a.price - b.price
+      sorter: (a, b) => a.price - b.price,
+      render: (number, row) =>
+        number / row.price < 1.05 ? (
+          <span style={{ backgroundColor: "green", color: "white" }}>
+            {number}
+          </span>
+        ) : (
+          <span>{number}</span>
+        )
     },
     {
       title: "52週低點",
       dataIndex: "52weekLow",
       width: 120,
-      sorter: (a, b) => a.price - b.price
+      sorter: (a, b) => a.price - b.price,
+      render: (number, row) =>
+        row.price / number < 1.1 ? (
+          <span style={{ backgroundColor: "red", color: "white" }}>
+            {number}
+          </span>
+        ) : (
+          <span>{number}</span>
+        )
     },
     {
       title: "漲跌",
@@ -66,7 +85,20 @@ const StockListPage = ({ module_type }) => {
       dataIndex: "value",
       width: 120,
       sorter: (a, b) => a.value - b.value,
-      render: (value) => <span>{Math.round(value / 10000000) / 10}</span>
+      render: (value) =>
+        value < 20 * Math.pow(10, 8) ? (
+          <span style={{ color: "green" }}>
+            {Math.round(value / 10000000) / 10}
+          </span>
+        ) : value > 100 * Math.pow(10, 8) ? (
+          <span style={{ color: "red" }}>
+            {Math.round(value / 10000000) / 10}
+          </span>
+        ) : (
+          <span style={{ color: "orange" }}>
+            {Math.round(value / 10000000) / 10}
+          </span>
+        )
     },
     {
       title: "PE",
@@ -80,7 +112,14 @@ const StockListPage = ({ module_type }) => {
       dataIndex: "forwardPe",
       width: 120,
       sorter: (a, b) => a.forwardPe - b.forwardPe,
-      render: (pe) => <span>{Math.round(pe * 10) / 10}</span>
+      render: (forwardPe, row) =>
+        forwardPe <= 0 ? (
+          <span style={{ color: "red" }}>{forwardPe}</span>
+        ) : forwardPe < row.TTM ? (
+          <span style={{ color: "green" }}>{forwardPe}</span>
+        ) : (
+          <span style={{ color: "orange" }}>{forwardPe}</span>
+        )
     },
     {
       title: "PB",
@@ -104,22 +143,50 @@ const StockListPage = ({ module_type }) => {
     {
       title: "關注度",
       dataIndex: "analystPopularity",
-      width: 80
+      width: 80,
+      sorter: (a, b) => a.yield - b.yield
     },
     {
       title: "財務指標",
       dataIndex: "fscore",
-      width: 90
+      width: 90,
+      sorter: (a, b) => a.yield - b.yield,
+      render: (fscore) =>
+        fscore <= 3 ? (
+          <span style={{ color: "red" }}>{fscore}</span>
+        ) : fscore >= 7 ? (
+          <span style={{ color: "green" }}>{fscore}</span>
+        ) : (
+          <span style={{ color: "orange" }}>{fscore}</span>
+        )
     },
     {
       title: "操縱指標",
       dataIndex: "mscore",
-      width: 90
+      width: 90,
+      sorter: (a, b) => a.yield - b.yield,
+      render: (mscore) =>
+        mscore <= -2.22 ? (
+          <span style={{ color: "green" }}>{mscore}</span>
+        ) : mscore >= -1.78 ? (
+          <span style={{ color: "red" }}>{mscore}</span>
+        ) : (
+          <span style={{ color: "orange" }}>{mscore}</span>
+        )
     },
     {
       title: "破產指標",
       dataIndex: "zscore",
-      width: 90
+      width: 90,
+      sorter: (a, b) => a.yield - b.yield,
+      render: (zscore) =>
+        zscore <= 1.81 ? (
+          <span style={{ color: "green" }}>{zscore}</span>
+        ) : zscore >= 2.99 ? (
+          <span style={{ color: "red" }}>{zscore}</span>
+        ) : (
+          <span style={{ color: "orange" }}>{zscore}</span>
+        )
     },
     {
       title: "殖利率",
@@ -133,59 +200,136 @@ const StockListPage = ({ module_type }) => {
       dataIndex: "thisRevenue",
       width: 160,
       sorter: (a, b) => a.thisRevenue - b.thisRevenue,
-      render: (ratio, row) => (
-        <span>
-          {ratio}% / {row.nextRevenue}%
-        </span>
-      )
+      render: (ratio, row) =>
+        ratio > 30 || row.nextRevenue > 30 ? (
+          <span style={{ color: "red" }}>
+            {ratio}%/{row.nextRevenue}%
+          </span>
+        ) : ratio < -20 || row.nextRevenue < -20 ? (
+          <span style={{ color: "green" }}>
+            {ratio}%/{row.nextRevenue}%
+          </span>
+        ) : (
+          <span>
+            {ratio}%/{row.nextRevenue}%
+          </span>
+        )
     },
     {
       title: "利潤增長(今/明)",
       dataIndex: "thisEPS",
       width: 160,
       sorter: (a, b) => a.thisEPS - b.thisEPS,
-      render: (ratio, row) => (
-        <span>
-          {ratio}% / {row.nextEPS}%
-        </span>
-      )
+      render: (ratio, row) =>
+        ratio > 50 ? (
+          <span style={{ color: "red" }}>
+            {ratio}%/{row.nextEPS}%
+          </span>
+        ) : ratio < -50 ? (
+          <span style={{ color: "green" }}>
+            {ratio}%/{row.nextEPS}%
+          </span>
+        ) : (
+          <span>
+            {ratio}%/{row.nextEPS}%
+          </span>
+        )
     },
     {
       title: "未來業績",
       dataIndex: "next5Year",
       width: 80,
       sorter: (a, b) => a.next5Year - b.next5Year,
-      render: (ratio) => <span>{ratio}%</span>
+      render: (ratio) =>
+        !ratio ? (
+          <span></span>
+        ) : ratio > 20 ? (
+          <span style={{ color: "red" }}>{ratio}%</span>
+        ) : ratio < -10 ? (
+          <span style={{ color: "green" }}>{ratio}%</span>
+        ) : (
+          <span>{ratio}%</span>
+        )
     },
     {
       title: "林奇估值",
       dataIndex: "lynchvalue",
       width: 90,
-      sorter: (a, b) => a.lynchvalue - b.lynchvalue
+      sorter: (a, b) => a.lynchvalue - b.lynchvalue,
+      render: (value, row) =>
+        !value ? (
+          <span></span>
+        ) : value >= row.price ? (
+          <span style={{ color: "green" }}>
+            <strong>{value}</strong>
+          </span>
+        ) : (
+          <span>{value}</span>
+        )
     },
     {
       title: "葛拉漢估值",
       dataIndex: "grahamnumber",
       width: 100,
-      sorter: (a, b) => a.grahamnumber - b.grahamnumber
+      sorter: (a, b) => a.grahamnumber - b.grahamnumber,
+      render: (value, row) =>
+        !value ? (
+          <span></span>
+        ) : value >= row.price ? (
+          <span style={{ color: "green" }}>
+            <strong>{value}</strong>
+          </span>
+        ) : (
+          <span>{value}</span>
+        )
     },
     {
       title: "DCF估值",
       dataIndex: "iv_dcf",
       width: 90,
-      sorter: (a, b) => a.iv_dcf - b.iv_dcf
+      sorter: (a, b) => a.iv_dcf - b.iv_dcf,
+      render: (value, row) =>
+        !value ? (
+          <span></span>
+        ) : value >= row.price ? (
+          <span style={{ color: "green" }}>
+            <strong>{value}</strong>
+          </span>
+        ) : (
+          <span>{value}</span>
+        )
     },
     {
       title: "FCF估值",
       dataIndex: "iv_dcf_share",
       width: 90,
-      sorter: (a, b) => a.iv_dcf_share - b.iv_dcf_share
+      sorter: (a, b) => a.iv_dcf_share - b.iv_dcf_share,
+      render: (value, row) =>
+        !value ? (
+          <span></span>
+        ) : value >= row.price ? (
+          <span style={{ color: "green" }}>
+            <strong>{value}</strong>
+          </span>
+        ) : (
+          <span>{value}</span>
+        )
     },
     {
       title: "PS回歸估值",
       dataIndex: "medpsvalue",
       width: 100,
-      sorter: (a, b) => a.medpsvalue - b.medpsvalue
+      sorter: (a, b) => a.medpsvalue - b.medpsvalue,
+      render: (value, row) =>
+        !value ? (
+          <span></span>
+        ) : value >= row.price ? (
+          <span style={{ color: "green" }}>
+            <strong>{value}</strong>
+          </span>
+        ) : (
+          <span>{value}</span>
+        )
     }
   ];
 

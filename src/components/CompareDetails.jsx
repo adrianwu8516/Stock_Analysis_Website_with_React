@@ -23,7 +23,7 @@ const CompareDetails = ({ symbol_list }) => {
     );
   const loading =
     compareDetailState.loading || !compareDetailState.data ? (
-      <Skeleton />
+      <Skeleton active />
     ) : null;
   return error ? (
     error

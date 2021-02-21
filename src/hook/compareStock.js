@@ -8,6 +8,11 @@ export const useCompareStockState = (symbol_list) => {
     data: null
   });
   useEffect(() => {
+    setCompareStockState({
+      loading: true,
+      error: null,
+      data: null
+    });
     getCompareStockData(symbol_list)
       .then((res) =>
         setCompareStockState({

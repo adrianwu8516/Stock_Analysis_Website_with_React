@@ -31,7 +31,9 @@ const ComparePage = () => {
             </Col>
           </Row>
           <Row justify="center">
-            <CompareDetails symbol_list={symbol_list} />
+            <Col span={18}>
+              <CompareDetails symbol_list={symbol_list} />
+            </Col>
           </Row>
         </Content>
       </Layout>

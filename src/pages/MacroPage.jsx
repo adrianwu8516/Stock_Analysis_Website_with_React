@@ -5,6 +5,7 @@ import MacroMonthlyCharts from "../components/MacroMonthlyCharts";
 import MacroQuarterlyCharts from "../components/MacroQuarterlyCharts";
 import SiteBreadcrumb from "../components/SiteBreadcrumb";
 import SiteSider from "../components/SiteSider";
+import { colorSet } from "../data";
 
 const MacroPage = () => {
   const { type } = useParams();
@@ -35,7 +36,7 @@ const MacroPage = () => {
           }
         }
       },
-      color: ["#08979C", "#D46B08", "#520339"],
+      color: colorSet,
       //["#ff4d4f", "#faad14", "#52c41a", "#13c2c2", "#9254de", "#ff85c0"],
       slider: {
         start: 0.7,
