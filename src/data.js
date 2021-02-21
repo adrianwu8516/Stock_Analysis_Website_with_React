@@ -90,21 +90,24 @@ const siderItem = {
         group_id: "compare_group",
         group_item: [
           {
-            key: "遊戲股族群",
+            key: "電玩遊戲類股",
             param: "gaming"
           },
           {
-            key: "線上博奕族群",
+            key: "線上博奕",
             param: "online_gamble"
           },
           {
-            key: "IC設計族群",
+            key: "IC設計",
             param: "ic_design"
           },
           {
             key: "國防工業",
             param: "military"
-          }
+          },
+          { key: "航空業", param: "airline" },
+          { key: "地產股", param: "realestate" },
+          { key: "CDN", param: "cdn" }
         ]
       }
     ]
@@ -129,7 +132,10 @@ const comparePairIndex = {
   gaming: "u,atvi,ea,znga,ttwo,otgly,ubsfy,ntes,sklz",
   online_gamble: "dkng,penn,evvty,pdypy",
   ic_design: "nvda,amd,avgo,qcom,mu,xlnx",
-  military: "lmt,ba,rtx,gd,noc"
+  military: "lmt,ba,rtx,gd,noc",
+  airline: "dal,ual,alk,aal,luv",
+  realestate: "o,iipr,spg,amt,cci,reg,low,dhi",
+  cdn: "vnet,gds,net,fsly"
 };
 
 const colorSet = [
