@@ -1,4 +1,4 @@
-import { Spin, Table } from "antd";
+import { Spin, Table, Tooltip } from "antd";
 import Layout, { Content } from "antd/lib/layout/layout";
 import { Link, useLocation, useParams } from "react-router-dom";
 import NoData from "../components/NoData";
@@ -19,7 +19,9 @@ const StockListPage = ({ module_type }) => {
       render: (symbol, row) => (
         <>
           <a href={row.url} target="_blank" rel="noopener noreferrer">
-            🌐
+            <Tooltip title="前往 Webull 網站">
+              <span>🌐 </span>
+            </Tooltip>
           </a>
           {symbol}
         </>
@@ -35,7 +37,7 @@ const StockListPage = ({ module_type }) => {
           to={`/${pathList[1]}/${pathList[2]}/${row.symbol.toLowerCase()}`}
           key={`${pathList[2]}/${row.symbol}`}
         >
-          {companyName}
+          <Tooltip title="前往財務資料">{companyName}</Tooltip>
         </Link>
       )
     },
@@ -52,7 +54,7 @@ const StockListPage = ({ module_type }) => {
       render: (number, row) =>
         number / row.price < 1.05 ? (
           <span style={{ backgroundColor: "green", color: "white" }}>
-            {number}
+            <Tooltip title="位於近年內高點">{number}</Tooltip>
           </span>
         ) : (
           <span>{number}</span>
@@ -65,7 +67,7 @@ const StockListPage = ({ module_type }) => {
       render: (number, row) =>
         row.price / number < 1.1 ? (
           <span style={{ backgroundColor: "red", color: "white" }}>
-            {number}
+            <Tooltip title="位於近年內低點">{number}</Tooltip>
           </span>
         ) : (
           <span>{number}</span>
@@ -76,7 +78,24 @@ const StockListPage = ({ module_type }) => {
       dataIndex: "delta",
       width: 80,
       sorter: (a, b) => a.delta - b.delta,
-      render: (ratio) => <span>{Math.round(ratio * 1000) / 10}%</span>
+      render: (ratio) =>
+        ratio > 0.05 ? (
+          <span style={{ backgroundColor: "green", color: "white" }}>
+            {Math.round(ratio * 1000) / 10}%
+          </span>
+        ) : ratio > 0 ? (
+          <span style={{ color: "green" }}>
+            {Math.round(ratio * 1000) / 10}%
+          </span>
+        ) : ratio < -0.05 ? (
+          <span style={{ backgroundColor: "red", color: "white" }}>
+            {Math.round(ratio * 1000) / 10}%
+          </span>
+        ) : ratio < 0 ? (
+          <span style={{ color: "red" }}>{Math.round(ratio * 1000) / 10}%</span>
+        ) : (
+          <span>{Math.round(ratio * 1000) / 10}%</span>
+        )
     },
     {
       title: "市值(億)",
@@ -86,7 +105,9 @@ const StockListPage = ({ module_type }) => {
       render: (value) =>
         value < 20 * Math.pow(10, 8) ? (
           <span style={{ color: "green" }}>
-            {Math.round(value / 10000000) / 10}
+            <Tooltip title="小型股的表現，以及變動通常優於中、大型股">
+              {Math.round(value / 10000000) / 10}
+            </Tooltip>
           </span>
         ) : value > 100 * Math.pow(10, 8) ? (
           <span style={{ color: "red" }}>
@@ -94,7 +115,9 @@ const StockListPage = ({ module_type }) => {
           </span>
         ) : (
           <span style={{ color: "orange" }}>
-            {Math.round(value / 10000000) / 10}
+            <Tooltip title="中型股的表現，以及變動通常優於大型股">
+              {Math.round(value / 10000000) / 10}
+            </Tooltip>
           </span>
         )
     },
@@ -111,12 +134,34 @@ const StockListPage = ({ module_type }) => {
       width: 120,
       sorter: (a, b) => a.forwardPe - b.forwardPe,
       render: (forwardPe, row) =>
-        forwardPe <= 0 ? (
-          <span style={{ color: "red" }}>{forwardPe}</span>
-        ) : forwardPe < row.TTM ? (
-          <span style={{ color: "green" }}>{forwardPe}</span>
+        row.TTM <= 0 && forwardPe > 0 ? (
+          <span style={{ backgroundColor: "green", color: "white" }}>
+            <Tooltip title="由虧轉盈">{forwardPe}</Tooltip>
+          </span>
+        ) : row.TTM >= 0 && forwardPe < 0 ? (
+          <span style={{ backgroundColor: "red", color: "white" }}>
+            <Tooltip title="由盈轉虧">{forwardPe}</Tooltip>
+          </span>
+        ) : forwardPe > 0 && forwardPe < row.TTM ? (
+          <span style={{ color: "green" }}>
+            <Tooltip title="因收益上升，推動估值下降">{forwardPe}</Tooltip>
+          </span>
+        ) : forwardPe > 0 && forwardPe > row.TTM ? (
+          <span style={{ color: "orange" }}>
+            <Tooltip title="因收益下降，推動估值上升">{forwardPe}</Tooltip>
+          </span>
+        ) : forwardPe < 0 && Math.abs(forwardPe) > Math.abs(row.TTM) ? (
+          <span style={{ color: "gold" }}>
+            <Tooltip title="雖然虧損，但是收益上升，虧損減少">
+              {forwardPe}
+            </Tooltip>
+          </span>
+        ) : forwardPe < 0 && forwardPe < row.TTM ? (
+          <span style={{ color: "red" }}>
+            <Tooltip title="越虧越多">{forwardPe}</Tooltip>
+          </span>
         ) : (
-          <span style={{ color: "orange" }}>{forwardPe}</span>
+          <span>{forwardPe}</span>
         )
     },
     {
@@ -134,82 +179,104 @@ const StockListPage = ({ module_type }) => {
       render: (ps) => <span>{Math.round(ps * 10) / 10}</span>
     },
     {
-      title: "分析師評價",
-      dataIndex: "analysis",
-      width: 250
-    },
-    {
-      title: "關注度",
-      dataIndex: "analystPopularity",
-      width: 80,
-      sorter: (a, b) => a.analystPopularity - b.analystPopularity
-    },
-    {
-      title: "財務指標",
-      dataIndex: "fscore",
-      width: 90,
-      sorter: (a, b) => a.fscore - b.fscore,
-      render: (fscore) =>
-        fscore <= 3 ? (
-          <span style={{ color: "red" }}>{fscore}</span>
-        ) : fscore >= 7 ? (
-          <span style={{ color: "green" }}>{fscore}</span>
-        ) : (
-          <span style={{ color: "orange" }}>{fscore}</span>
-        )
-    },
-    {
-      title: "操縱指標",
-      dataIndex: "mscore",
-      width: 90,
-      sorter: (a, b) => a.mscore - b.mscore,
-      render: (mscore) =>
-        mscore <= -2.22 ? (
-          <span style={{ color: "green" }}>{mscore}</span>
-        ) : mscore >= -1.78 ? (
-          <span style={{ color: "red" }}>{mscore}</span>
-        ) : (
-          <span style={{ color: "orange" }}>{mscore}</span>
-        )
-    },
-    {
-      title: "破產指標",
-      dataIndex: "zscore",
-      width: 90,
-      sorter: (a, b) => a.zscore - b.zscore,
-      render: (zscore) =>
-        zscore <= 1.81 ? (
-          <span style={{ color: "green" }}>{zscore}</span>
-        ) : zscore >= 2.99 ? (
-          <span style={{ color: "red" }}>{zscore}</span>
-        ) : (
-          <span style={{ color: "orange" }}>{zscore}</span>
-        )
-    },
-    {
       title: "殖利率",
       dataIndex: "yield",
       width: 100,
       sorter: (a, b) => a.yield - b.yield,
-      render: (ratio) => <span>{Math.round(ratio * 1000) / 10}%</span>
+      render: (ratio) =>
+        ratio != 0 ? (
+          <span style={{ color: "green" }}>
+            {Math.round(ratio * 1000) / 10}%
+          </span>
+        ) : (
+          <span style={{ color: "lightgray" }}>
+            {Math.round(ratio * 1000) / 10}
+          </span>
+        )
+    },
+    {
+      title: "PEG(今/明)",
+      dataIndex: "TTM",
+      align: "center",
+      width: 160,
+      sorter: (a, b) => a.thisRevenue - b.thisRevenue,
+      render: (pe, row) =>
+        pe > 0 &&
+        row.thisRevenue > 0 &&
+        row.forwardPe > 0 &&
+        row.nextRevenue > 0 &&
+        pe / row.thisRevenue < 2 &&
+        row.forwardPe / row.nextRevenue < 2 ? (
+          <span style={{ backgroundColor: "green", color: "white" }}>
+            <Tooltip title="可以用低價買到高成長股">
+              <strong>
+                {Math.round((pe / row.thisRevenue) * 10) / 10}% /{" "}
+                {Math.round((row.forwardPe / row.nextRevenue) * 10) / 10}%
+              </strong>
+            </Tooltip>
+          </span>
+        ) : pe > 0 &&
+          row.thisRevenue > 0 &&
+          row.forwardPe > 0 &&
+          row.nextRevenue > 0 ? (
+          <span style={{ color: "green" }}>
+            {Math.round((pe / row.thisRevenue) * 10) / 10}% /{" "}
+            {Math.round((row.forwardPe / row.nextRevenue) * 10) / 10}%
+          </span>
+        ) : pe > 0 && row.thisRevenue > 0 ? (
+          <span style={{ color: "green" }}>
+            {Math.round((pe / row.thisRevenue) * 10) / 10}% /
+          </span>
+        ) : (
+          <span></span>
+        )
     },
     {
       title: "業績增長(今/明)",
       dataIndex: "thisRevenue",
+      align: "center",
       width: 160,
       sorter: (a, b) => a.thisRevenue - b.thisRevenue,
       render: (ratio, row) =>
-        ratio > 30 || row.nextRevenue > 30 ? (
-          <span style={{ color: "red" }}>
-            {ratio}%/{row.nextRevenue}%
-          </span>
-        ) : ratio < -20 || row.nextRevenue < -20 ? (
+        ratio >= 30 && row.nextRevenue >= 30 ? (
           <span style={{ color: "green" }}>
-            {ratio}%/{row.nextRevenue}%
+            <strong>
+              {ratio}/{row.nextRevenue}%
+            </strong>
+          </span>
+        ) : ratio >= 30 && row.nextRevenue < 0 ? (
+          <span>
+            <span style={{ color: "green" }}>
+              <strong>{ratio}/</strong>
+            </span>
+            <span style={{ color: "red" }}>{row.nextRevenue}%</span>
+          </span>
+        ) : ratio >= 30 ? (
+          <span>
+            <span style={{ color: "green" }}>
+              <strong>{ratio}/</strong>
+            </span>
+            <span>{row.nextRevenue}%</span>
+          </span>
+        ) : ratio < -20 && row.nextRevenue < 0 ? (
+          <span style={{ color: "red" }}>
+            {ratio}/{row.nextRevenue}%
+          </span>
+        ) : ratio < -20 && row.nextRevenue > 30 ? (
+          <span>
+            <span style={{ color: "red" }}>{ratio}/</span>
+            <span style={{ color: "green" }}>
+              <strong>{row.nextRevenue}%</strong>
+            </span>
+          </span>
+        ) : ratio < -20 ? (
+          <span>
+            <span style={{ color: "red" }}>{ratio}/</span>
+            <span>{row.nextRevenue}%</span>
           </span>
         ) : (
           <span>
-            {ratio}%/{row.nextRevenue}%
+            {ratio}/{row.nextRevenue}%
           </span>
         )
     },
@@ -217,19 +284,48 @@ const StockListPage = ({ module_type }) => {
       title: "利潤增長(今/明)",
       dataIndex: "thisEPS",
       width: 160,
+      align: "center",
       sorter: (a, b) => a.thisEPS - b.thisEPS,
       render: (ratio, row) =>
-        ratio > 50 ? (
+        ratio >= 50 && row.nextEPS >= 50 ? (
+          <span style={{ color: "green" }}>
+            <strong>
+              {ratio}/{row.nextEPS}%
+            </strong>
+          </span>
+        ) : ratio >= 50 && row.nextEPS < 0 ? (
+          <span>
+            <span style={{ color: "green" }}>
+              <strong>{ratio}/</strong>
+            </span>
+            <span style={{ color: "red" }}>{row.nextEPS}%</span>
+          </span>
+        ) : ratio >= 50 ? (
+          <span>
+            <span style={{ color: "green" }}>
+              <strong>{ratio}/</strong>
+            </span>
+            <span>{row.nextEPS}%</span>
+          </span>
+        ) : ratio < -50 && row.nextEPS < 0 ? (
           <span style={{ color: "red" }}>
-            {ratio}%/{row.nextEPS}%
+            {ratio}/{row.nextEPS}%
+          </span>
+        ) : ratio < -50 && row.nextEPS > 50 ? (
+          <span>
+            <span style={{ color: "red" }}>{ratio}/</span>
+            <span style={{ color: "green" }}>
+              <strong>{row.nextEPS}%</strong>
+            </span>
           </span>
         ) : ratio < -50 ? (
-          <span style={{ color: "green" }}>
-            {ratio}%/{row.nextEPS}%
+          <span>
+            <span style={{ color: "red" }}>{ratio}/</span>
+            <span>{row.nextEPS}%</span>
           </span>
         ) : (
           <span>
-            {ratio}%/{row.nextEPS}%
+            {ratio}/{row.nextEPS}%
           </span>
         )
     },
@@ -254,7 +350,91 @@ const StockListPage = ({ module_type }) => {
         )
     },
     {
-      title: "林奇估值",
+      title: "分析師評價",
+      dataIndex: "analysis",
+      width: 250
+    },
+    {
+      title: "關注度",
+      dataIndex: "analystPopularity",
+      width: 80,
+      sorter: (a, b) => a.analystPopularity - b.analystPopularity
+    },
+    {
+      title: (
+        <Tooltip
+          placement="bottomRight"
+          title="財務指標為 F-Score 分數，是芝加哥大學的教授 Joseph Piotroski 在「從歷史財報中分辨出贏家及輸家」中，所提出的指標，分數 0~9 分，分數越高代表公司財務表現越好。"
+        >
+          財務指標
+        </Tooltip>
+      ),
+      dataIndex: "fscore",
+      width: 90,
+      sorter: (a, b) => a.fscore - b.fscore,
+      render: (fscore) =>
+        fscore <= 3 ? (
+          <span style={{ color: "red" }}>{fscore}</span>
+        ) : fscore >= 7 ? (
+          <span style={{ color: "green" }}>{fscore}</span>
+        ) : (
+          <span style={{ color: "orange" }}>{fscore}</span>
+        )
+    },
+    {
+      title: (
+        <Tooltip
+          placement="bottomRight"
+          title="操縱分數是 M-Score，由Messod D. Beneish 在 1999 年提出，它通過財務比率，對財務的合理程度打分，主要用於判斷財務報表風險。
+          M 值越高，則一家公司財務操縱的可能性越大，M ＜ -2.22時為安全，如果 -2.22 ≤ M ＜-1.78 之間，證明有一定風險，而如果 M ≥ -1.78，則公司造假風險高。"
+        >
+          操縱指標
+        </Tooltip>
+      ),
+      dataIndex: "mscore",
+      width: 90,
+      sorter: (a, b) => a.mscore - b.mscore,
+      render: (mscore) =>
+        mscore === 0 ? (
+          <span></span>
+        ) : mscore <= -2.22 ? (
+          <span style={{ color: "green" }}>{mscore}</span>
+        ) : mscore >= -1.78 ? (
+          <span style={{ color: "red" }}>{mscore}</span>
+        ) : (
+          <span style={{ color: "orange" }}>{mscore}</span>
+        )
+    },
+    {
+      title: (
+        <Tooltip
+          placement="bottomRight"
+          title="破產指標為 Z-Score，由 Edward Altman 在 1968 年發表，通過對美國破產和非破產生產型企業進行觀察建立了 5 變量 Z-Score 模型。如果指標大於 2.99 則為安全，1.8 ≦ Z ＜ 2.99 有一定風險，Z ＜ 1.8 則有可能破產。"
+        >
+          破產指標
+        </Tooltip>
+      ),
+      dataIndex: "zscore",
+      width: 90,
+      sorter: (a, b) => a.zscore - b.zscore,
+      render: (zscore) =>
+        zscore <= 1.81 ? (
+          <span style={{ color: "red" }}>{zscore}</span>
+        ) : zscore >= 2.99 ? (
+          <span style={{ color: "green" }}>{zscore}</span>
+        ) : (
+          <span style={{ color: "orange" }}>{zscore}</span>
+        )
+    },
+    {
+      title: (
+        <Tooltip
+          placement="bottomRight"
+          title="按照不同的估值方式所試算的企業合理股價"
+        >
+          林奇估值
+        </Tooltip>
+      ),
       dataIndex: "lynchvalue",
       width: 90,
       sorter: (a, b) => a.lynchvalue - b.lynchvalue,
@@ -270,7 +450,14 @@ const StockListPage = ({ module_type }) => {
         )
     },
     {
-      title: "葛拉漢估值",
+      title: (
+        <Tooltip
+          placement="bottomRight"
+          title="按照不同的估值方式所試算的企業合理股價"
+        >
+          葛拉漢估值
+        </Tooltip>
+      ),
       dataIndex: "grahamnumber",
       width: 100,
       sorter: (a, b) => a.grahamnumber - b.grahamnumber,
@@ -286,7 +473,14 @@ const StockListPage = ({ module_type }) => {
         )
     },
     {
-      title: "DCF估值",
+      title: (
+        <Tooltip
+          placement="bottomRight"
+          title="按照不同的估值方式所試算的企業合理股價"
+        >
+          DCF估值
+        </Tooltip>
+      ),
       dataIndex: "iv_dcf",
       width: 90,
       sorter: (a, b) => a.iv_dcf - b.iv_dcf,
@@ -302,7 +496,14 @@ const StockListPage = ({ module_type }) => {
         )
     },
     {
-      title: "FCF估值",
+      title: (
+        <Tooltip
+          placement="bottomRight"
+          title="按照不同的估值方式所試算的企業合理股價"
+        >
+          FCF估值
+        </Tooltip>
+      ),
       dataIndex: "iv_dcf_share",
       width: 90,
       sorter: (a, b) => a.iv_dcf_share - b.iv_dcf_share,
@@ -318,7 +519,14 @@ const StockListPage = ({ module_type }) => {
         )
     },
     {
-      title: "PS回歸估值",
+      title: (
+        <Tooltip
+          placement="bottomRight"
+          title="按照不同的估值方式所試算的企業合理股價"
+        >
+          PS回歸估值
+        </Tooltip>
+      ),
       dataIndex: "medpsvalue",
       width: 100,
       sorter: (a, b) => a.medpsvalue - b.medpsvalue,
