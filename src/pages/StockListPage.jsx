@@ -179,18 +179,30 @@ const StockListPage = ({ module_type }) => {
       render: (ps) => <span>{Math.round(ps * 10) / 10}</span>
     },
     {
+      title: "回購率",
+      dataIndex: "buyback_yield",
+      width: 100,
+      sorter: (a, b) => a.buyback_yield - b.buyback_yield,
+      render: (value) =>
+        value != 0 ? (
+          <span style={{ color: "green" }}>{Math.round(value * 10) / 10}%</span>
+        ) : (
+          <span style={{ color: "lightgray" }}>{value}</span>
+        )
+    },
+    {
       title: "殖利率",
       dataIndex: "yield",
       width: 100,
       sorter: (a, b) => a.yield - b.yield,
-      render: (ratio) =>
-        ratio != 0 ? (
+      render: (value) =>
+        value != 0 ? (
           <span style={{ color: "green" }}>
-            {Math.round(ratio * 1000) / 10}%
+            {Math.round(value * 1000) / 10}%
           </span>
         ) : (
           <span style={{ color: "lightgray" }}>
-            {Math.round(ratio * 1000) / 10}
+            {Math.round(value * 1000) / 10}
           </span>
         )
     },
@@ -352,7 +364,15 @@ const StockListPage = ({ module_type }) => {
     {
       title: "分析師評價",
       dataIndex: "analysis",
-      width: 250
+      width: 250,
+      render: (str) =>
+        str.match(/低於/) ? (
+          <span style={{ color: "green" }}>{str}</span>
+        ) : str.match(/高於/) ? (
+          <span style={{ color: "red" }}>{str}</span>
+        ) : (
+          <span>{str}</span>
+        )
     },
     {
       title: "關注度",
