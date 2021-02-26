@@ -142,11 +142,11 @@ const StockListPage = ({ module_type }) => {
           <span style={{ backgroundColor: "red", color: "white" }}>
             <Tooltip title="由盈轉虧">{forwardPe}</Tooltip>
           </span>
-        ) : forwardPe > 0 && forwardPe < row.TTM ? (
+        ) : forwardPe > 0 && forwardPe <= parseFloat(row.TTM) ? (
           <span style={{ color: "green" }}>
             <Tooltip title="因收益上升，推動估值下降">{forwardPe}</Tooltip>
           </span>
-        ) : forwardPe > 0 && forwardPe > row.TTM ? (
+        ) : forwardPe > 0 && forwardPe > parseFloat(row.TTM) ? (
           <span style={{ color: "orange" }}>
             <Tooltip title="因收益下降，推動估值上升">{forwardPe}</Tooltip>
           </span>
@@ -156,7 +156,7 @@ const StockListPage = ({ module_type }) => {
               {forwardPe}
             </Tooltip>
           </span>
-        ) : forwardPe < 0 && forwardPe < row.TTM ? (
+        ) : forwardPe < 0 && forwardPe < parseFloat(row.TTM) ? (
           <span style={{ color: "red" }}>
             <Tooltip title="越虧越多">{forwardPe}</Tooltip>
           </span>
