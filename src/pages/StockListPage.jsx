@@ -6,7 +6,6 @@ import NotFound from "../components/NotFound";
 import SiteBreadcrumb from "../components/SiteBreadcrumb";
 import SiteSider from "../components/SiteSider";
 import { useStockListState } from "../hook/stockList";
-
 const StockListPage = ({ module_type }) => {
   const location = useLocation();
   const pathList = location.pathname.split("/");
@@ -150,8 +149,8 @@ const StockListPage = ({ module_type }) => {
           <span style={{ color: "orange" }}>
             <Tooltip title="因收益下降，推動估值上升">{forwardPe}</Tooltip>
           </span>
-        ) : forwardPe < 0 && Math.abs(forwardPe) > Math.abs(row.TTM) ? (
-          <span style={{ color: "gold" }}>
+        ) : forwardPe < 0 && parseFloat(forwardPe) < parseFloat(row.TTM) ? (
+          <span style={{ color: "darkorange" }}>
             <Tooltip title="雖然虧損，但是收益上升，虧損減少">
               {forwardPe}
             </Tooltip>
@@ -222,8 +221,8 @@ const StockListPage = ({ module_type }) => {
           <span style={{ backgroundColor: "green", color: "white" }}>
             <Tooltip title="可以用低價買到高成長股">
               <strong>
-                {Math.round((pe / row.thisRevenue) * 10) / 10}% /{" "}
-                {Math.round((row.forwardPe / row.nextRevenue) * 10) / 10}%
+                {Math.round((pe / row.thisRevenue) * 10) / 10}倍 /{" "}
+                {Math.round((row.forwardPe / row.nextRevenue) * 10) / 10} 倍
               </strong>
             </Tooltip>
           </span>
@@ -232,8 +231,8 @@ const StockListPage = ({ module_type }) => {
           row.forwardPe > 0 &&
           row.nextRevenue > 0 ? (
           <span style={{ color: "green" }}>
-            {Math.round((pe / row.thisRevenue) * 10) / 10}% /{" "}
-            {Math.round((row.forwardPe / row.nextRevenue) * 10) / 10}%
+            {Math.round((pe / row.thisRevenue) * 10) / 10}倍 /{" "}
+            {Math.round((row.forwardPe / row.nextRevenue) * 10) / 10} 倍
           </span>
         ) : pe > 0 && row.thisRevenue > 0 ? (
           <span style={{ color: "green" }}>
@@ -560,6 +559,42 @@ const StockListPage = ({ module_type }) => {
         ) : (
           <span>{value}</span>
         )
+    },
+    {
+      title: "參考資料",
+      dataIndex: "symbol",
+      width: 85,
+      render: (symbol) => (
+        <>
+          <a
+            href={
+              "https://finance.yahoo.com/quote/" +
+              symbol +
+              "/analysis?p=" +
+              symbol
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Tooltip title="前往 Yahoo Finance 網站查閱預期成長資訊">
+              Yahoo
+            </Tooltip>
+          </a>
+          <br />
+          <a
+            href={
+              "https://www.gurufocus.com/stock/" +
+              symbol +
+              "/summary?search=" +
+              symbol
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Tooltip title="前往 gurufocus 網站查閱財務分析數字">guru</Tooltip>
+          </a>
+        </>
+      )
     }
   ];
 
