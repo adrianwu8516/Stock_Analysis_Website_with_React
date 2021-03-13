@@ -59,7 +59,6 @@ const StockInfoPage = () => {
             </a>
           </Tooltip>
         </h2>
-
         <StockDetailInfoTable symbol={symbol} />
         <StockFRChartsSection symbol={symbol} />
         <h2>{symbol.toUpperCase()} 股價走勢</h2>
