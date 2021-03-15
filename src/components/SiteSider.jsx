@@ -28,6 +28,9 @@ const SiteSider = ({ type }) => {
           mode="inline"
           defaultOpenKeys={[
             "software",
+            "industry",
+            "tradition",
+            "all",
             "selected_index",
             "compare_group",
             "time_span"

@@ -79,6 +79,11 @@ const siderItem = {
           { key: "物流股", param: "Logistics" },
           { key: "日常用品", param: "DailyLife" }
         ]
+      },
+      {
+        group_name: "股票總覽",
+        group_id: "all",
+        group_item: [{ key: "股票總覽", param: "All" }]
       }
     ]
   },

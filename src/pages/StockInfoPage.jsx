@@ -11,6 +11,8 @@ import { useStockChartState } from "../hook/stockChart";
 import yahoo_logo from "../image/yahoo-finance-icon-128.png";
 import guru_logo from "../image/gurufocus_icon.jpg";
 import webull_logo from "../image/webull_icon.jpg";
+import snowball_logo from "../image/snowball_icon.jpeg";
+
 const StockInfoPage = () => {
   const { module_type, symbol } = useParams();
   const { data, loading, error } = useStockChartState(symbol);
@@ -55,7 +57,16 @@ const StockInfoPage = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={webull_logo} width={22} />
+              <img src={webull_logo} width={22} />{" "}
+            </a>
+          </Tooltip>
+          <Tooltip title="前往雪球討論區">
+            <a
+              href={"https://xueqiu.com/S/" + symbol}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src={snowball_logo} width={20} />{" "}
             </a>
           </Tooltip>
         </h2>
