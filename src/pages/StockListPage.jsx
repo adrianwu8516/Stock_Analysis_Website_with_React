@@ -184,7 +184,13 @@ const StockListPage = ({ module_type }) => {
       sorter: (a, b) => a.buyback_yield - b.buyback_yield,
       render: (value) =>
         value != 0 ? (
-          <span style={{ color: "green" }}>{Math.round(value * 10) / 10}%</span>
+          value > 0 ? (
+            <span style={{ color: "green" }}>
+              {Math.round(value * 10) / 10}%
+            </span>
+          ) : (
+            <span style={{ color: "red" }}>{Math.round(value * 10) / 10}%</span>
+          )
         ) : (
           <span style={{ color: "lightgray" }}>{value}</span>
         )
@@ -203,6 +209,20 @@ const StockListPage = ({ module_type }) => {
           <span style={{ color: "lightgray" }}>
             {Math.round(value * 1000) / 10}
           </span>
+        )
+    },
+    {
+      title: "超額報酬",
+      dataIndex: "excessReturn",
+      width: 100,
+      sorter: (a, b) => a.excessReturn - b.excessReturn,
+      render: (value) =>
+        value >= 0 ? (
+          <span style={{ color: "green" }}>
+            {Math.round(value * 100) / 100}%
+          </span>
+        ) : (
+          <span style={{ color: "red" }}>{Math.round(value * 100) / 100}%</span>
         )
     },
     {
