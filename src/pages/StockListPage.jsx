@@ -212,9 +212,16 @@ const StockListPage = ({ module_type }) => {
         )
     },
     {
-      title: "超額報酬",
+      title: (
+        <Tooltip
+          placement="bottomRight"
+          title="投入資本報酬率 ROIC 減掉加權平均資本成本 WACC，唯有在投資報酬率高於資金成本的情況下，才會產生超額報酬，創造出一個良好的正向循環。企業的投入資本報酬(ROIC)如果大於資金成本(WACC)，就能創造經濟學家所謂的超額報酬(excess return)"
+        >
+          超額報酬
+        </Tooltip>
+      ),
       dataIndex: "excessReturn",
-      width: 100,
+      width: 120,
       sorter: (a, b) => a.excessReturn - b.excessReturn,
       render: (value) =>
         value >= 0 ? (
@@ -223,6 +230,75 @@ const StockListPage = ({ module_type }) => {
           </span>
         ) : (
           <span style={{ color: "red" }}>{Math.round(value * 100) / 100}%</span>
+        )
+    },
+    {
+      title: (
+        <Tooltip
+          placement="bottomRight"
+          title="ROE簡單來說就是公司用自有資本賺錢的能力，反應了公司運用資源的效率。因此，ROE數值愈高，獲利能力愈佳，公司能有效利用股東資金，所以股東就可能享受到公司所給予的獲利愈多。但依據公式，ROE可以靠舉債來提升，所以在負債比例高的產業(如: 銀行業、金控業)則不適合用ROE來判斷。若公司的ROE高，但ROA卻很低，這代表公司主要獲利多是來自高財務槓桿，相對的投資風險會因此提高。"
+        >
+          ROE
+        </Tooltip>
+      ),
+      dataIndex: "roe",
+      width: 100,
+      sorter: (a, b) => a.roe - b.roe,
+      render: (value) =>
+        value > 0 ? (
+          value > 15 ? (
+            <span style={{ color: "green" }}>{value}%</span>
+          ) : (
+            <span>{value}%</span>
+          )
+        ) : (
+          <span style={{ color: "red" }}>{value}</span>
+        )
+    },
+    {
+      title: (
+        <Tooltip
+          placement="bottomRight"
+          title="資產報酬率衡量企業利用資產的經營效率。 資產報酬率越高，代表整體資產帶回的獲利越高。 資產報酬率衡量的標準，長期至少要比定存利率、長期公債利率高為佳(約5%)， 否則同樣的錢拿去買定存或債券不只獲利較好，安全性還更高。 另一個觀察重點為ROA的走勢，ROA走勢平穩或上升為佳。"
+        >
+          ROA
+        </Tooltip>
+      ),
+      dataIndex: "roa",
+      width: 100,
+      sorter: (a, b) => a.roa - b.roa,
+      render: (value) =>
+        value > 0 ? (
+          value > 5 ? (
+            <span style={{ color: "green" }}>{value}%</span>
+          ) : (
+            <span>{value}%</span>
+          )
+        ) : (
+          <span style={{ color: "red" }}>{value}</span>
+        )
+    },
+    {
+      title: (
+        <Tooltip
+          placement="bottomRight"
+          title="類似狹義的ROA，通常是指資產中針對本業資本支出的部分，代表每投入一塊錢的資本，可以賺得多少利潤。資產跟資本最大的差別在，資本是包含在資產裡面，所以談論資本時，如何對資本定義才是最首要的任務，因為唯有先定義資本所含的項目，我們才有辦法去得知資本報酬率是建立在投資什麼面向上的報酬率。巴菲特其實對於資本報酬率情有獨鍾，因為ROE雖然反映公司派有沒有妥善利用股東們的金錢，但並沒有告訴我們是如何使用；所以ROIC則是解決了這個問題，我們通常會希望公司成長沒錯，但更希望它是來自本業的成長，而非業外或是其他轉投資導致。"
+        >
+          ROIC
+        </Tooltip>
+      ),
+      dataIndex: "roic",
+      width: 100,
+      sorter: (a, b) => a.roic - b.roic,
+      render: (value) =>
+        value > 0 ? (
+          value > 5 ? (
+            <span style={{ color: "green" }}>{value}%</span>
+          ) : (
+            <span>{value}%</span>
+          )
+        ) : (
+          <span style={{ color: "red" }}>{value}</span>
         )
     },
     {
