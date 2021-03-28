@@ -732,7 +732,7 @@ const StockListPage = ({ module_type }) => {
               dataSource={stockListState.data}
               onChange={onChange}
               scroll={{ x: 1500 }}
-              pagination={{ pageSize: 30 }}
+              pagination={{ pageSize: 100, hideOnSinglePage: true }}
             />
           </Content>
         )}
