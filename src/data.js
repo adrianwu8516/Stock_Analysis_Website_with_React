@@ -6,6 +6,7 @@ const siderItem = {
         group_name: "指標分類",
         group_id: "selected_index",
         group_item: [
+          { key: "超級績效候選股", param: "Champion" },
           { key: "突破52週新高", param: "NewHight" },
           { key: "良好財報", param: "NiceFinancialReport" },
           { key: "擊敗分析師預期", param: "BeatEst" },
@@ -37,7 +38,8 @@ const siderItem = {
           { key: "廣告技術", param: "AdTech" },
           { key: "IT集團", param: "ITSolution" },
           { key: "遊戲股", param: "Gaming" },
-          { key: "中概股", param: "ChinaConcept" }
+          { key: "中概股", param: "ChinaConcept" },
+          { key: "區塊鏈", param: "Blockchain" }
         ]
       },
       {

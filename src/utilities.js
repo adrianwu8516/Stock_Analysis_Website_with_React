@@ -2,7 +2,7 @@ import axios from "axios";
 import { siderItem } from "./data.js";
 
 const domain =
-  "https://script.google.com/macros/s/AKfycbzeVZOrXXcNvGQ4PyDyjcrFX6g7vVOHGpuGujcTBhUteSab_pRZWxyZ/exec";
+  "https://script.google.com/macros/s/AKfycbw47BIPlb8ZDuvA-e2-W_s0xFwOJDONkUrj7P8DJ1QFCRhrNSTlqx5ZQgbH69I97Utw/exec";
 
 const parseTime = (objList) => {
   const value = objList.map((obj) => ({

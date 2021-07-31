@@ -476,6 +476,11 @@ const StockListPage = ({ module_type }) => {
       sorter: (a, b) => a.analystPopularity - b.analystPopularity
     },
     {
+      title: "分析師EPS預期",
+      dataIndex: "epsNote",
+      width: 230
+    },
+    {
       title: (
         <Tooltip
           placement="bottomRight"
