@@ -6,6 +6,12 @@ import NotFound from "../components/NotFound";
 import SiteBreadcrumb from "../components/SiteBreadcrumb";
 import SiteSider from "../components/SiteSider";
 import { useStockListState } from "../hook/stockList";
+import yahoo_logo from "../image/yahoo-finance-icon-128.png";
+import guru_logo from "../image/gurufocus_icon.jpg";
+import webull_logo from "../image/webull_icon.jpg";
+import snowball_logo from "../image/snowball_icon.jpeg";
+import seeking_alpha_logo from "../image/seeking_alpha_icon.png";
+
 const StockListPage = ({ module_type }) => {
   const location = useLocation();
   const pathList = location.pathname.split("/");
@@ -14,14 +20,60 @@ const StockListPage = ({ module_type }) => {
       title: "代號",
       dataIndex: "symbol",
       fixed: "left",
-      width: 100,
+      width: 200,
       render: (symbol, row) => (
         <>
-          <a href={row.url} target="_blank" rel="noopener noreferrer">
-            <Tooltip title="前往 Webull 網站">
-              <span>🌐 </span>
-            </Tooltip>
-          </a>
+          <Tooltip title="前往 GuruFocus 網站">
+            <a
+              href={
+                "https://www.gurufocus.com/stock/" +
+                symbol +
+                "/summary?search=" +
+                symbol
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src={guru_logo} width={20} />{" "}
+            </a>
+          </Tooltip>
+          <Tooltip title="前往 Yahoo Finance 網站">
+            <a
+              href={
+                "https://finance.yahoo.com/quote/" +
+                symbol +
+                "/analysis?p=" +
+                symbol
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src={yahoo_logo} width={20} />{" "}
+            </a>
+          </Tooltip>
+          <Tooltip title="前往 Webull 網站">
+            <a href={row.url} target="_blank" rel="noopener noreferrer">
+              <img src={webull_logo} width={22} />{" "}
+            </a>
+          </Tooltip>
+          <Tooltip title="前往雪球討論區">
+            <a
+              href={"https://xueqiu.com/S/" + symbol}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src={snowball_logo} width={20} />{" "}
+            </a>
+          </Tooltip>
+          <Tooltip title="前往 Seeking Alpha 討論區">
+            <a
+              href={"https://seekingalpha.com/symbol/" + symbol}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src={seeking_alpha_logo} width={20} />{" "}
+            </a>
+          </Tooltip>
           {symbol}
         </>
       )
@@ -660,42 +712,6 @@ const StockListPage = ({ module_type }) => {
         ) : (
           <span>{value}</span>
         )
-    },
-    {
-      title: "參考資料",
-      dataIndex: "symbol",
-      width: 85,
-      render: (symbol) => (
-        <>
-          <a
-            href={
-              "https://finance.yahoo.com/quote/" +
-              symbol +
-              "/analysis?p=" +
-              symbol
-            }
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Tooltip title="前往 Yahoo Finance 網站查閱預期成長資訊">
-              Yahoo
-            </Tooltip>
-          </a>
-          <br />
-          <a
-            href={
-              "https://www.gurufocus.com/stock/" +
-              symbol +
-              "/summary?search=" +
-              symbol
-            }
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Tooltip title="前往 gurufocus 網站查閱財務分析數字">guru</Tooltip>
-          </a>
-        </>
-      )
     }
   ];
 

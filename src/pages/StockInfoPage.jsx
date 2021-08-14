@@ -12,6 +12,7 @@ import yahoo_logo from "../image/yahoo-finance-icon-128.png";
 import guru_logo from "../image/gurufocus_icon.jpg";
 import webull_logo from "../image/webull_icon.jpg";
 import snowball_logo from "../image/snowball_icon.jpeg";
+import seeking_alpha_logo from "../image/seeking_alpha_icon.png";
 
 const StockInfoPage = () => {
   const { module_type, symbol } = useParams();
@@ -67,6 +68,15 @@ const StockInfoPage = () => {
               rel="noopener noreferrer"
             >
               <img src={snowball_logo} width={20} />{" "}
+            </a>
+          </Tooltip>
+          <Tooltip title="前往 Seeking Alpha 討論區">
+            <a
+              href={"https://seekingalpha.com/symbol/" + symbol}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src={seeking_alpha_logo} width={20} />{" "}
             </a>
           </Tooltip>
         </h2>
